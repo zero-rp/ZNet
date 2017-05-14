@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="libuv">
+      <UniqueIdentifier>{9ff4fcc8-7448-43ee-9738-2af1b10176a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libuv\src">
+      <UniqueIdentifier>{e84475f1-7bde-43fb-8522-cf070246990d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libuv\src\win">
+      <UniqueIdentifier>{ec090945-ec96-4331-96ae-3dc090f84625}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{da7eb572-0ab3-43de-a697-4475ed844bef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lualib">
+      <UniqueIdentifier>{b819618e-4867-475a-a233-109cb4b4c2f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\server">
+      <UniqueIdentifier>{4ea2f488-8133-461d-8310-248b26585fb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lualib\lpeg">
+      <UniqueIdentifier>{36e67b36-5657-4664-8e25-8064ed37149d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lualib\sproto">
+      <UniqueIdentifier>{30eac602-203b-43cd-adb1-237acc8f5778}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\libuv\src\fs-poll.c">
+      <Filter>libuv\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\inet.c">
+      <Filter>libuv\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\threadpool.c">
+      <Filter>libuv\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\uv-common.c">
+      <Filter>libuv\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\version.c">
+      <Filter>libuv\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\async.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\core.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\dl.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\error.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\fs.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\fs-event.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\getaddrinfo.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\getnameinfo.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\handle.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\loop-watcher.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\pipe.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\poll.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\process.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\process-stdio.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\req.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\signal.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\snprintf.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\stream.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\tcp.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\thread.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\timer.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\udp.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\util.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\winapi.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\winsock.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\malloc_hook.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_daemon.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_env.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_error.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_handle.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_harbor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_log.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_module.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_monitor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_mq.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_server.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_start.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_timer.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\server\service_harbor.c">
+      <Filter>src\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\server\service_logger.c">
+      <Filter>src\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\server\service_snlua.c">
+      <Filter>src\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-memory.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-seri.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-skynet.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-profile.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-socket.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\skynet_socket.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lpeg\lpcap.c">
+      <Filter>src\lualib\lpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lpeg\lpcode.c">
+      <Filter>src\lualib\lpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lpeg\lptree.c">
+      <Filter>src\lualib\lpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lpeg\lpvm.c">
+      <Filter>src\lualib\lpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\sproto\lsproto.c">
+      <Filter>src\lualib\sproto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\sproto\sproto.c">
+      <Filter>src\lualib\sproto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-netpack.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\socket_server.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\libuv\src\heap-inl.h">
+      <Filter>libuv\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libuv\src\queue.h">
+      <Filter>libuv\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libuv\src\uv-common.h">
+      <Filter>libuv\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libuv\src\win\atomicops-inl.h">
+      <Filter>libuv\src\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libuv\src\win\handle-inl.h">
+      <Filter>libuv\src\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libuv\src\win\internal.h">
+      <Filter>libuv\src\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libuv\src\win\req-inl.h">
+      <Filter>libuv\src\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libuv\src\win\stream-inl.h">
+      <Filter>libuv\src\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libuv\src\win\winapi.h">
+      <Filter>libuv\src\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libuv\src\win\winsock.h">
+      <Filter>libuv\src\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\atomic.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spinlock.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\luashrtbl.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\malloc_hook.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_daemon.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_env.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_handle.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_harbor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_imp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_log.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_malloc.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_module.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_monitor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_mq.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_server.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_timer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\server\service_snlua.h">
+      <Filter>src\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\server\service_logger.h">
+      <Filter>src\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lualib\lua-seri.h">
+      <Filter>src\lualib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\skynet_socket.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\server\service_harbor.h">
+      <Filter>src\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lualib\lpeg\lpcap.h">
+      <Filter>src\lualib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lualib\lpeg\lpcode.h">
+      <Filter>src\lualib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lualib\lpeg\lptree.h">
+      <Filter>src\lualib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lualib\lpeg\lptypes.h">
+      <Filter>src\lualib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lualib\lpeg\lpvm.h">
+      <Filter>src\lualib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lualib\sproto\msvcint.h">
+      <Filter>src\lualib\sproto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lualib\sproto\sproto.h">
+      <Filter>src\lualib\sproto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\socket_server.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

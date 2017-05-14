@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{b1f6d517-8a33-4688-9f58-57f55e09aa75}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\lua\src\lapi.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lauxlib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lbaselib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lbitlib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lcode.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lcorolib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lctype.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\ldblib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\ldebug.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\ldo.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\ldump.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lfunc.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lgc.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\linit.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\liolib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\llex.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lmathlib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lmem.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\loadlib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lobject.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lopcodes.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\loslib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lparser.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lstate.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lstring.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lstrlib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\ltable.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\ltablib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\ltm.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\luac.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lundump.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lutf8lib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lvm.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lua\src\lzio.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\lua\src\lapi.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lauxlib.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lcode.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lctype.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\ldebug.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\ldo.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lfunc.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lgc.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\llex.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\llimits.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lmem.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lobject.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lopcodes.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lparser.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lprefix.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lstate.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lstring.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\ltable.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\ltm.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lua.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\luaconf.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lualib.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lundump.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lvm.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lua\src\lzio.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
