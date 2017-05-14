@@ -31,3 +31,9 @@
 # Debug files
 *.dSYM/
 *.su
+bin/
+build/
+vs/.vs/*
+*.db
+*.exp
+tool/admin.bak
