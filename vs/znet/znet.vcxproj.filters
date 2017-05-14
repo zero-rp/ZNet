@@ -210,6 +210,12 @@
     <ClCompile Include="..\..\src\socket_server.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-mysqlaux.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-mongo.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\libuv\src\heap-inl.h">

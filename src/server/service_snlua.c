@@ -79,7 +79,8 @@ LUAMOD_API int luaopen_socketdriver(lua_State *L);
 LUAMOD_API int luaopen_lpeg(lua_State *L);
 LUAMOD_API int luaopen_sproto_core(lua_State *L);
 LUAMOD_API int luaopen_netpack(lua_State *L);
-
+LUAMOD_API int luaopen_mysqlaux_c(lua_State *L);
+LUAMOD_API int luaopen_mongo_driver(lua_State *L);
 static int
 init_cb(struct snlua *l, struct skynet_context *ctx, const char * args, size_t sz) {
 	lua_State *L = l->L;
@@ -101,6 +102,8 @@ init_cb(struct snlua *l, struct skynet_context *ctx, const char * args, size_t s
     luaopen_lpeg(L);
     luaopen_sproto_core(L);
     luaopen_netpack(L);
+    luaopen_mysqlaux_c(L);
+    luaopen_mongo_driver(L);
     //ÄÚÖÃ¿â¼ÓÔØÍê±Ï
 
 	const char *path = optstring(ctx, "lua_path","./lualib/?.lua;./lualib/?/init.lua");
