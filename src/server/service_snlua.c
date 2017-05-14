@@ -81,6 +81,14 @@ LUAMOD_API int luaopen_sproto_core(lua_State *L);
 LUAMOD_API int luaopen_netpack(lua_State *L);
 LUAMOD_API int luaopen_mysqlaux_c(lua_State *L);
 LUAMOD_API int luaopen_mongo_driver(lua_State *L);
+LUAMOD_API int luaopen_crypt(lua_State *L);
+LUAMOD_API int luaopen_sharedata_core(lua_State *L);
+LUAMOD_API int luaopen_multicast_core(lua_State *L);
+LUAMOD_API int luaopen_debugchannel(lua_State *L);
+LUAMOD_API int luaopen_cluster_core(lua_State *L);
+LUAMOD_API int luaopen_clientsocket(lua_State *L);
+LUAMOD_API int luaopen_bson(lua_State *L);
+
 static int
 init_cb(struct snlua *l, struct skynet_context *ctx, const char * args, size_t sz) {
 	lua_State *L = l->L;
@@ -104,6 +112,13 @@ init_cb(struct snlua *l, struct skynet_context *ctx, const char * args, size_t s
     luaopen_netpack(L);
     luaopen_mysqlaux_c(L);
     luaopen_mongo_driver(L);
+    luaopen_crypt(L);
+    luaopen_sharedata_core(L);
+    luaopen_multicast_core(L);
+    luaopen_debugchannel(L);
+    luaopen_cluster_core(L);
+    //luaopen_clientsocket(L);
+    luaopen_bson(L);
     //ƒ⁄÷√ø‚º”‘ÿÕÍ±œ
 
 	const char *path = optstring(ctx, "lua_path","./lualib/?.lua;./lualib/?/init.lua");

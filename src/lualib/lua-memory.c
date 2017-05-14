@@ -59,7 +59,7 @@ luaopen_memory_(lua_State *L) {
 		{ "dumpinfo", ldumpinfo },
 		{ "dump", ldump },
 		{ "info", dump_mem_lua },
-		{ "ssinfo", luaS_shrinfo },
+//		{ "ssinfo", luaS_shrinfo },
 		{ "ssexpand", lexpandshrtbl },
 		{ "current", lcurrent },
 		{ NULL, NULL },

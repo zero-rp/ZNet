@@ -216,6 +216,36 @@
     <ClCompile Include="..\..\src\lualib\lua-mongo.c">
       <Filter>src\lualib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-crypt.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lsha1.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-bson.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-clientsocket.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-cluster.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-debugchannel.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-multicast.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-sharedata.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-stm.c">
+      <Filter>src\lualib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\server\service_gate.c">
+      <Filter>src\server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\libuv\src\heap-inl.h">
@@ -337,6 +367,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\socket_server.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\server\databuffer.h">
+      <Filter>src\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\server\hashid.h">
+      <Filter>src\server</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

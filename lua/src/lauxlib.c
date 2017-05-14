@@ -1065,7 +1065,6 @@ clearcache() {
 
 static void
 init() {
-	SPIN_INIT(&CC);
 	CC.L = luaL_newstate();
 }
 
@@ -1088,13 +1087,13 @@ static const void *
 save(const char *key, const void * proto) {
   lua_State *L;
   const void * result = NULL;
-  if (CC.L == NULL) {
+  if(!CC.L)
+      SPIN_INIT(&CC);
+  SPIN_LOCK(&CC)
+    if (CC.L == NULL) {
       init();
       L = CC.L;
-  }
-  
-  SPIN_LOCK(&CC)
-    {
+    } else {
       L = CC.L;
       lua_pushstring(L, key);
       lua_pushvalue(L, -1);

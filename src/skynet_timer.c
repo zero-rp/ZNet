@@ -6,7 +6,11 @@
 #include "skynet_handle.h"
 #include "spinlock.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#include <sys/timeb.h>
+#elif defined(__APPLE__)
 #include <time.h>
+#endif
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
@@ -232,50 +236,51 @@ skynet_timeout(uint32_t handle, int time, int session) {
 // centisecond: 1/100 second
 static void
 systime(uint32_t *sec, uint32_t *cs) {
-#if !defined(__APPLE__)
-	struct timespec ti;
-	//clock_gettime(CLOCK_REALTIME, &ti);
-	//*sec = (uint32_t)ti.tv_sec;
-	//*cs = (uint32_t)(ti.tv_nsec / 10000000);
+#if defined(_WIN32) || defined(_WIN64)
+    struct _timeb timebuffer;
+    _ftime_s(&timebuffer);
+    *sec = (uint32_t)timebuffer.time;
+    *cs = timebuffer.millitm / 10;
+#elif !defined(__APPLE__)
+    struct timespec ti;
+    clock_gettime(CLOCK_REALTIME, &ti);
+    *sec = (uint32_t)ti.tv_sec;
+    *cs = (uint32_t)(ti.tv_nsec / 10000000);
 #else
-	struct timeval tv;
-	gettimeofday(&tv, NULL);
-	*sec = tv.tv_sec;
-	*cs = tv.tv_usec / 10000;
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    *sec = tv.tv_sec;
+    *cs = tv.tv_usec / 10000;
 #endif
-    //ti = *(struct timespec*)
-    //*cs= uv_hrtime() / 10000000;
-    LARGE_INTEGER counter;
-
-    if (!QueryPerformanceCounter(&counter)) {
-        return ;
-    }
-    *sec = (uint32_t)counter.LowPart;
-    *cs = (uint32_t)(counter.HighPart);
 }
 
 static uint64_t
 gettime() {
-	uint64_t t;
-#if !defined(__APPLE__)
-	//struct timespec ti;
-	//clock_gettime(CLOCK_MONOTONIC, &ti);
-	//t = (uint64_t)ti.tv_sec * 100;
-	//t += ti.tv_nsec / 10000000;
-#else
-	struct timeval tv;
-	gettimeofday(&tv, NULL);
-	t = (uint64_t)tv.tv_sec * 100;
-	t += tv.tv_usec / 10000;
-#endif
-//	return t;
-    LARGE_INTEGER counter;
+    uint64_t t;
+#if defined(_WIN32) || defined(_WIN64)
+    struct _timeb timebuffer;
+    _ftime_s(&timebuffer);
+    t = timebuffer.time * 100;
+    t += timebuffer.millitm / 10;
+#elif !defined(__APPLE__)
 
-    if (!QueryPerformanceCounter(&counter)) {
-        return;
-    }
-    return counter.QuadPart;
-    return uv_hrtime();
+#ifdef CLOCK_MONOTONIC_RAW
+#define CLOCK_TIMER CLOCK_MONOTONIC_RAW
+#else
+#define CLOCK_TIMER CLOCK_MONOTONIC
+#endif
+
+    struct timespec ti;
+    clock_gettime(CLOCK_TIMER, &ti);
+    t = (uint64_t)ti.tv_sec * 100;
+    t += ti.tv_nsec / 10000000;
+#else
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    t = (uint64_t)tv.tv_sec * 100;
+    t += tv.tv_usec / 10000;
+#endif
+    return t;
 }
 
 void
@@ -344,3 +349,22 @@ skynet_thread_time(void) {
     //return (uint64_t)ti.tv_sec * MICROSEC + (uint64_t)ti.tv_nsec / (NANOSEC / MICROSEC);
 #endif
 }
+#if defined(WIN32)
+void usleep(uint32_t us)
+{
+    LARGE_INTEGER litmp;
+    LONGLONG QPart1, QPart2;
+    double dfFreq, dfTim;
+    us--;
+    QueryPerformanceFrequency(&litmp);
+    dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率  
+    
+    QueryPerformanceCounter(&litmp);
+    QPart1 = litmp.QuadPart;// 获得初始值
+
+    do {
+        QueryPerformanceCounter(&litmp);
+        QPart2 = litmp.QuadPart;//获得中止值
+    } while ((double)(QPart2 - QPart1) / dfFreq * 1000000 < us);
+}
+#endif

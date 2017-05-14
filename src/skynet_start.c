@@ -6,7 +6,7 @@
 #include "skynet_module.h"
 #include "skynet_timer.h"
 #include "skynet_monitor.h"
-//#include "skynet_socket.h"
+#include "skynet_socket.h"
 #include "skynet_daemon.h"
 #include "skynet_harbor.h"
 
@@ -80,7 +80,6 @@ thread_socket(void *p) {
         }
         wakeup(m, 0);
     }
-    return NULL;
 }
 
 static void
@@ -112,8 +111,6 @@ thread_monitor(void *p) {
 			Sleep(1000);
 		}
 	}
-
-	return NULL;
 }
 
 static void
@@ -139,7 +136,7 @@ thread_timer(void *p) {
 		skynet_updatetime();
 		CHECK_ABORT
 		wakeup(m,m->count-1);
-		Sleep(2500);
+		Sleep(25);
 		if (SIG) {
 			signal_hup();
 			SIG = 0;
@@ -226,7 +223,7 @@ start(int thread) {
 	}
 
 	for (i=0;i<thread+3;i++) {
-        uv_thread_join(&pid[i], NULL);
+        uv_thread_join(&pid[i]);
 	}
 
 	free_monitor(m);

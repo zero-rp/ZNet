@@ -2,7 +2,7 @@
 #define skynet_malloc_h
 
 #include <stddef.h>
-
+#include <malloc.h>
 #define skynet_malloc malloc
 #define skynet_calloc calloc
 #define skynet_realloc realloc

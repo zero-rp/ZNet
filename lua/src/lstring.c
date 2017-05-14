@@ -266,7 +266,7 @@ Udata *luaS_newudata (lua_State *L, size_t s) {
 #define getaddrstr(ts)	(cast(char *, (ts)) + sizeof(UTString))
 
 struct shrmap_slot {
-    uv_rwlock_t lock;       //¶ÁĞ´Ëø
+    uv_rwlock_t lock;       //ï¿½ï¿½Ğ´ï¿½ï¿½
 	TString *str;
 };
 
@@ -320,14 +320,14 @@ static TString *
 query_ptr(TString *t) {
 	unsigned int h = t->hash;
 	struct shrmap_slot *s = &SSM.h[HASH_NODE(h)];
-    uv_rwlock_wrlock(&s->lock);
+	uv_rwlock_rdlock(&s->lock);
 	TString *ts = s->str;
 	while (ts) {
 		if (ts == t)
 			break;
 		ts = ts->u.hnext;
 	}
-    uv_rwlock_wrunlock(&s->lock);
+	uv_rwlock_rdunlock(&s->lock);
 	return ts;
 }
 
