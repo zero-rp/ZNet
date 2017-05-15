@@ -74,7 +74,7 @@ local function docmd(cmdline, print, fd)
 	end
 
 	if ok then
-		print(command)
+		print("<CMD " .. command .. ">")
 		if list then
 			if type(list) == "string" then
 				print(list)
@@ -82,15 +82,15 @@ local function docmd(cmdline, print, fd)
 				dump_list(print, list)
 			end
 		end
-		print("<CMD OK>")
+		print("</CMD OK>")
 	else
 		print(list)
-		print("<CMD Error>")
+		print("</CMD Error>")
 	end
 end
 
 local function console_main_loop(stdin, print)
-	print("Welcome to skynet console")
+	print("<CMD hello>\nWelcome to skynet console\n</CMD OK>")
 	skynet.error(stdin, "connected")
 	local ok, err = pcall(function()
 		while true do
