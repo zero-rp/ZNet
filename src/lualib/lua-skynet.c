@@ -318,7 +318,7 @@ ltostring(lua_State *L) {
 	if (lua_isnoneornil(L,1)) {
 		return 0;
 	}
-    PrintLuaStack(L);
+    //PrintLuaStack(L);
 	char * msg = lua_touserdata(L,1);
 	size_t sz = luaL_checkinteger(L,2);
 	lua_pushlstring(L,msg,sz);
