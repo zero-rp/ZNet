@@ -282,6 +282,7 @@
     <ClInclude Include="..\..\src\malloc_hook.h" />
     <ClInclude Include="..\..\src\server\databuffer.h" />
     <ClInclude Include="..\..\src\server\hashid.h" />
+    <ClInclude Include="..\..\src\server\service_gate.h" />
     <ClInclude Include="..\..\src\server\service_harbor.h" />
     <ClInclude Include="..\..\src\server\service_logger.h" />
     <ClInclude Include="..\..\src\server\service_snlua.h" />

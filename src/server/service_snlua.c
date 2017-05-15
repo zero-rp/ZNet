@@ -117,7 +117,7 @@ init_cb(struct snlua *l, struct skynet_context *ctx, const char * args, size_t s
     luaopen_multicast_core(L);
     luaopen_debugchannel(L);
     luaopen_cluster_core(L);
-    //luaopen_clientsocket(L);
+    luaopen_clientsocket(L);
     luaopen_bson(L);
     //ÄÚÖÃ¿â¼ÓÔØÍê±Ï
 

@@ -380,5 +380,8 @@
     <ClInclude Include="..\..\src\server\hashid.h">
       <Filter>src\server</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\server\service_gate.h">
+      <Filter>src\server</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
