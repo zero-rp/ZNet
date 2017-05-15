@@ -432,7 +432,7 @@ cmd_query(struct skynet_context * context, const char * param) {
 
 static const char *
 cmd_name(struct skynet_context * context, const char * param) {
-	int size = strlen(param);
+    size_t size = strlen(param);
     char *name = alloca(size + 1);
     char *handle = alloca(size + 1);
 	sscanf(param,"%s %s",name,handle);

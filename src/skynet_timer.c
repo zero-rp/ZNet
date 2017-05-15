@@ -354,7 +354,7 @@ void usleep(uint32_t us)
 {
     LARGE_INTEGER litmp;
     LONGLONG QPart1, QPart2;
-    double dfFreq, dfTim;
+    double dfFreq;
     us--;
     QueryPerformanceFrequency(&litmp);
     dfFreq = (double)litmp.QuadPart;// 获得计数器的时钟频率  

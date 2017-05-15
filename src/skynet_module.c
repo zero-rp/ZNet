@@ -28,7 +28,7 @@ _try_open(struct modules *m, const char * name) {
 	size_t path_size = strlen(path);
 	size_t name_size = strlen(name);
 
-	int sz = path_size + name_size;
+	size_t sz = path_size + name_size;
 	//search path
 	void * dl = NULL;
 	char *tmp=alloca(sz);
@@ -40,8 +40,8 @@ _try_open(struct modules *m, const char * name) {
 		if (*path == '\0') break;
 		l = strchr(path, ';');
 		if (l == NULL) l = path + strlen(path);
-		int len = l - path;
-		int i;
+		size_t len = l - path;
+        size_t i;
 		for (i=0;path[i]!='?' && i < len ;i++) {
 			tmp[i] = path[i];
 		}

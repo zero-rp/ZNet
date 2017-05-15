@@ -63,13 +63,18 @@ void
 forward_message(int type, bool padding, struct socket_message * result) {
 	struct skynet_socket_message *sm;
     size_t sz = sizeof(*sm);
-	if (padding) {
-		if (result->data) {
-			sz += strlen(result->data);
-		} else {
-			result->data = "";
-		}
-	}
+    if (padding) {
+        if (result->data) {
+            size_t msg_sz = strlen(result->data);
+            if (msg_sz > 128) {
+                msg_sz = 128;
+            }
+            sz += msg_sz;
+        }
+        else {
+            result->data = "";
+        }
+    }
 	sm = (struct skynet_socket_message *)skynet_malloc(sz);
 	sm->type = type;
 	sm->id = result->id;

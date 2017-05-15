@@ -285,14 +285,42 @@ lerror(lua_State *L) {
 	skynet_error(context, "%s", lua_tostring(L, -1));
 	return 0;
 }
+void PrintLuaStack(lua_State* pLuaState)
+{
+    int stackTop = lua_gettop(pLuaState);//获取栈顶的索引值  
+    int nIdx = 0;
+    int nType;
+    printf("--栈顶(v)(%d)--\n", stackTop);
 
+    //显示栈中的元素  
+    for (nIdx = stackTop; nIdx > 0; --nIdx)
+    {
+        nType = lua_type(pLuaState, nIdx);
+        printf("(i:%d) %s(%s)\n", nIdx, lua_typename(pLuaState, nType), lua_tostring(pLuaState, nIdx));
+    }
+
+    printf("--栈底--\n");
+
+    lua_getglobal(pLuaState, "debug");
+    lua_getfield(pLuaState, -1, "traceback");
+    int iError = lua_pcall(pLuaState,    //VMachine    
+        0,    //Argument Count    
+        1,    //Return Value Count    
+        0);
+    const char* sz = lua_tostring(pLuaState, -1);
+    printf("--调用栈(v)--\n");
+    printf(sz);
+    lua_pop(pLuaState, 2);
+
+}
 static int
 ltostring(lua_State *L) {
 	if (lua_isnoneornil(L,1)) {
 		return 0;
 	}
+    PrintLuaStack(L);
 	char * msg = lua_touserdata(L,1);
-	int sz = luaL_checkinteger(L,2);
+	size_t sz = luaL_checkinteger(L,2);
 	lua_pushlstring(L,msg,sz);
 	return 1;
 }

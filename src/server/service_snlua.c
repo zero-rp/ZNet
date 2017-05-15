@@ -182,7 +182,7 @@ launch_cb(struct skynet_context * context, void *ud, int type, int session, uint
 
 int
 snlua_init(struct snlua *l, struct skynet_context *ctx, const char * args) {
-	int sz = strlen(args);
+	size_t sz = strlen(args);
 	char * tmp = skynet_malloc(sz);
 	memcpy(tmp, args, sz);
 	skynet_callback(ctx, l , launch_cb);

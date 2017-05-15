@@ -26,7 +26,7 @@ skynet_error(struct skynet_context * context, const char *msg, ...) {
 	va_list ap;
 
 	va_start(ap,msg);
-	int len = vsnprintf(tmp, LOG_MESSAGE_SIZE, msg, ap);
+	size_t len = vsnprintf(tmp, LOG_MESSAGE_SIZE, msg, ap);
 	va_end(ap);
 	if (len >=0 && len < LOG_MESSAGE_SIZE) {
 		data = skynet_strdup(tmp);

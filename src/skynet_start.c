@@ -231,7 +231,7 @@ start(int thread) {
 
 static void
 bootstrap(struct skynet_context * logger, const char * cmdline) {
-	int sz = strlen(cmdline);
+    size_t sz = strlen(cmdline);
     char *name = alloca(sz + 1);
     char *args = alloca(sz + 1);
 	sscanf(cmdline, "%s %s", name, args);
