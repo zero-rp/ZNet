@@ -246,6 +246,12 @@
     <ClCompile Include="..\..\src\server\service_gate.c">
       <Filter>src\server</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\tty.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libuv\src\win\detect-wakeup.c">
+      <Filter>libuv\src\win</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\libuv\src\heap-inl.h">

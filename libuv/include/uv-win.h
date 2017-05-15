@@ -29,14 +29,7 @@ typedef intptr_t ssize_t;
 # define _SSIZE_T_DEFINED
 #endif
 
-#if USING_VC6RT != 1
 #include <winsock2.h>
-#endif
-#include <winsock.h>
-#if USING_VC6RT == 1
-#include <winsock2_vc6.h>
-#define snprintf _snprintf
-#endif
 
 #if defined(__MINGW32__) && !defined(__MINGW64_VERSION_MAJOR)
 typedef struct pollfd {
@@ -50,17 +43,16 @@ typedef struct pollfd {
 # define LOCALE_INVARIANT 0x007f
 #endif
 
-#if USING_VC6RT != 1
 #include <mswsock.h>
 #include <ws2tcpip.h>
-#endif
 #include <windows.h>
 
 #include <process.h>
 #include <signal.h>
+#include <fcntl.h>
 #include <sys/stat.h>
 
-#if defined(_MSC_VER) && _MSC_VER < 1600 && USING_VC6RT != 1
+#if defined(_MSC_VER) && _MSC_VER < 1600
 # include "stdint-msvc2008.h"
 #else
 # include <stdint.h>
@@ -169,11 +161,6 @@ typedef struct pollfd {
                        LPTRANSMIT_FILE_BUFFERS lpTransmitBuffers,
                        DWORD dwFlags);
 
-  typedef PVOID RTL_SRWLOCK;
-  typedef RTL_SRWLOCK SRWLOCK, *PSRWLOCK;
-#endif
-
-#if USING_VC6RT == 1
   typedef PVOID RTL_SRWLOCK;
   typedef RTL_SRWLOCK SRWLOCK, *PSRWLOCK;
 #endif
@@ -489,6 +476,40 @@ RB_HEAD(uv_timer_tree_s, uv_timer_s);
     struct { uv_pipe_server_fields } serv;                                    \
     struct { uv_pipe_connection_fields } conn;                                \
   } pipe;
+
+/* TODO: put the parser states in an union - TTY handles are always */
+/* half-duplex so read-state can safely overlap write-state. */
+#define UV_TTY_PRIVATE_FIELDS                                                 \
+  HANDLE handle;                                                              \
+  union {                                                                     \
+    struct {                                                                  \
+      /* Used for readable TTY handles */                                     \
+      /* TODO: remove me in v2.x. */                                          \
+      HANDLE unused_;                                                         \
+      uv_buf_t read_line_buffer;                                              \
+      HANDLE read_raw_wait;                                                   \
+      /* Fields used for translating win keystrokes into vt100 characters */  \
+      char last_key[8];                                                       \
+      unsigned char last_key_offset;                                          \
+      unsigned char last_key_len;                                             \
+      WCHAR last_utf16_high_surrogate;                                        \
+      INPUT_RECORD last_input_record;                                         \
+    } rd;                                                                     \
+    struct {                                                                  \
+      /* Used for writable TTY handles */                                     \
+      /* utf8-to-utf16 conversion state */                                    \
+      unsigned int utf8_codepoint;                                            \
+      unsigned char utf8_bytes_left;                                          \
+      /* eol conversion state */                                              \
+      unsigned char previous_eol;                                             \
+      /* ansi parser state */                                                 \
+      unsigned char ansi_parser_state;                                        \
+      unsigned char ansi_csi_argc;                                            \
+      unsigned short ansi_csi_argv[4];                                        \
+      COORD saved_position;                                                   \
+      WORD saved_attributes;                                                  \
+    } wr;                                                                     \
+  } tty;
 
 #define UV_POLL_PRIVATE_FIELDS                                                \
   SOCKET socket;                                                              \

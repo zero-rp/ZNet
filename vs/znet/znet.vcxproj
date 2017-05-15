@@ -179,6 +179,7 @@
     <ClCompile Include="..\..\libuv\src\version.c" />
     <ClCompile Include="..\..\libuv\src\win\async.c" />
     <ClCompile Include="..\..\libuv\src\win\core.c" />
+    <ClCompile Include="..\..\libuv\src\win\detect-wakeup.c" />
     <ClCompile Include="..\..\libuv\src\win\dl.c" />
     <ClCompile Include="..\..\libuv\src\win\error.c" />
     <ClCompile Include="..\..\libuv\src\win\fs-event.c" />
@@ -198,6 +199,7 @@
     <ClCompile Include="..\..\libuv\src\win\tcp.c" />
     <ClCompile Include="..\..\libuv\src\win\thread.c" />
     <ClCompile Include="..\..\libuv\src\win\timer.c" />
+    <ClCompile Include="..\..\libuv\src\win\tty.c" />
     <ClCompile Include="..\..\libuv\src\win\udp.c" />
     <ClCompile Include="..\..\libuv\src\win\util.c" />
     <ClCompile Include="..\..\libuv\src\win\winapi.c" />

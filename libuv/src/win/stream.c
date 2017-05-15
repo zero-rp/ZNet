@@ -85,6 +85,9 @@ int uv_read_start(uv_stream_t* handle, uv_alloc_cb alloc_cb,
     case UV_NAMED_PIPE:
       err = uv_pipe_read_start((uv_pipe_t*)handle, alloc_cb, read_cb);
       break;
+    case UV_TTY:
+      err = uv_tty_read_start((uv_tty_t*) handle, alloc_cb, read_cb);
+      break;
     default:
       assert(0);
   }
@@ -100,7 +103,9 @@ int uv_read_stop(uv_stream_t* handle) {
     return 0;
 
   err = 0;
-    {
+  if (handle->type == UV_TTY) {
+    err = uv_tty_read_stop((uv_tty_t*) handle);
+  } else {
     if (handle->type == UV_NAMED_PIPE) {
       uv__pipe_stop_read((uv_pipe_t*) handle);
     } else {
@@ -132,6 +137,9 @@ int uv_write(uv_write_t* req,
       break;
     case UV_NAMED_PIPE:
       err = uv_pipe_write(loop, req, (uv_pipe_t*) handle, bufs, nbufs, cb);
+      break;
+    case UV_TTY:
+      err = uv_tty_write(loop, req, (uv_tty_t*) handle, bufs, nbufs, cb);
       break;
     default:
       assert(0);
@@ -184,6 +192,8 @@ int uv_try_write(uv_stream_t* stream,
   switch (stream->type) {
     case UV_TCP:
       return uv__tcp_try_write((uv_tcp_t*) stream, bufs, nbufs);
+    case UV_TTY:
+      return uv__tty_try_write((uv_tty_t*) stream, bufs, nbufs);
     case UV_NAMED_PIPE:
       return UV_EAGAIN;
     default:
@@ -200,8 +210,7 @@ int uv_shutdown(uv_shutdown_t* req, uv_stream_t* handle, uv_shutdown_cb cb) {
     return UV_EPIPE;
   }
 
-  uv_req_init(loop, (uv_req_t*) req);
-  req->type = UV_SHUTDOWN;
+  UV_REQ_INIT(req, UV_SHUTDOWN);
   req->handle = handle;
   req->cb = cb;
 

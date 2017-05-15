@@ -75,6 +75,7 @@ struct socket {
 	union {
 		uv_tcp_t tcp;
 		uv_udp_t udp;
+        uv_tty_t tty;
 	} s;
 	uint16_t protocol;
 	int id;
@@ -535,19 +536,19 @@ new_fd(struct socket_server *ss, int id, int fd, int protocol, uintptr_t opaque,
 	assert(s->type == SOCKET_TYPE_RESERVE);
 	s->id = id;
 	if (protocol == PROTOCOL_TCP) {
-		//if (fileno(stdin) == fd || fileno(stdout) == fd || fileno(stderr) == fd) {
-			/*if (uv_tty_init(ss->loop, &s->s.tty, fd, (fileno(stdin) == fd)) != 0) {
+		if (fileno(stdin) == fd || fileno(stdout) == fd || fileno(stderr) == fd) {
+			if (uv_tty_init(ss->loop, &s->s.tty, fd, (fileno(stdin) == fd)) != 0) {
 				uv_close((uv_handle_t *)&s->s, close_cb);
 				return NULL;
-			}*/
-		//}
-		//else {
+			}
+		}
+		else {
 			uv_tcp_init(ss->loop, &s->s.tcp);
 			if (fd != -1 && uv_tcp_open(&s->s.tcp, fd) != 0) {
 				uv_close((uv_handle_t *)&s->s, close_cb);
 				return NULL;
 			}
-		//}
+		}
 		s->s.tcp.data = ss;
 
 		if (add) {

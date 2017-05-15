@@ -50,7 +50,7 @@ extern "C" {
 #include <stddef.h>
 #include <stdio.h>
 
-#if defined(_MSC_VER) && _MSC_VER < 1600 && USING_VC6RT != 1
+#if defined(_MSC_VER) && _MSC_VER < 1600
 # include "stdint-msvc2008.h"
 #else
 # include <stdint.h>
@@ -155,6 +155,7 @@ extern "C" {
   XX(STREAM, stream)                                                          \
   XX(TCP, tcp)                                                                \
   XX(TIMER, timer)                                                            \
+  XX(TTY, tty)                                                                \
   XX(UDP, udp)                                                                \
   XX(SIGNAL, signal)                                                          \
 
@@ -202,6 +203,7 @@ typedef struct uv_stream_s uv_stream_t;
 typedef struct uv_tcp_s uv_tcp_t;
 typedef struct uv_udp_s uv_udp_t;
 typedef struct uv_pipe_s uv_pipe_t;
+typedef struct uv_tty_s uv_tty_t;
 typedef struct uv_poll_s uv_poll_t;
 typedef struct uv_timer_s uv_timer_t;
 typedef struct uv_prepare_s uv_prepare_t;
@@ -272,6 +274,7 @@ UV_EXTERN void uv_loop_delete(uv_loop_t*);
 UV_EXTERN size_t uv_loop_size(void);
 UV_EXTERN int uv_loop_alive(const uv_loop_t* loop);
 UV_EXTERN int uv_loop_configure(uv_loop_t* loop, uv_loop_option option, ...);
+UV_EXTERN int uv_loop_fork(uv_loop_t* loop);
 
 UV_EXTERN int uv_run(uv_loop_t*, uv_run_mode mode);
 UV_EXTERN void uv_stop(uv_loop_t*);
@@ -360,6 +363,8 @@ typedef enum {
   UV_JOIN_GROUP
 } uv_membership;
 
+
+UV_EXTERN int uv_translate_sys_error(int sys_errno);
 
 UV_EXTERN const char* uv_strerror(int err);
 UV_EXTERN const char* uv_err_name(int err);
@@ -635,6 +640,42 @@ UV_EXTERN int uv_udp_recv_start(uv_udp_t* handle,
                                 uv_alloc_cb alloc_cb,
                                 uv_udp_recv_cb recv_cb);
 UV_EXTERN int uv_udp_recv_stop(uv_udp_t* handle);
+
+
+/*
+ * uv_tty_t is a subclass of uv_stream_t.
+ *
+ * Representing a stream for the console.
+ */
+struct uv_tty_s {
+  UV_HANDLE_FIELDS
+  UV_STREAM_FIELDS
+  UV_TTY_PRIVATE_FIELDS
+};
+
+typedef enum {
+  /* Initial/normal terminal mode */
+  UV_TTY_MODE_NORMAL,
+  /* Raw input mode (On Windows, ENABLE_WINDOW_INPUT is also enabled) */
+  UV_TTY_MODE_RAW,
+  /* Binary-safe I/O mode for IPC (Unix-only) */
+  UV_TTY_MODE_IO
+} uv_tty_mode_t;
+
+UV_EXTERN int uv_tty_init(uv_loop_t*, uv_tty_t*, uv_file fd, int readable);
+UV_EXTERN int uv_tty_set_mode(uv_tty_t*, uv_tty_mode_t mode);
+UV_EXTERN int uv_tty_reset_mode(void);
+UV_EXTERN int uv_tty_get_winsize(uv_tty_t*, int* width, int* height);
+
+#ifdef __cplusplus
+extern "C++" {
+
+inline int uv_tty_set_mode(uv_tty_t* handle, int mode) {
+  return uv_tty_set_mode(handle, static_cast<uv_tty_mode_t>(mode));
+}
+
+}
+#endif
 
 UV_EXTERN uv_handle_type uv_guess_handle(uv_file file);
 
@@ -1033,6 +1074,10 @@ UV_EXTERN int uv_interface_addresses(uv_interface_address_t** addresses,
 UV_EXTERN void uv_free_interface_addresses(uv_interface_address_t* addresses,
                                            int count);
 
+UV_EXTERN int uv_os_getenv(const char* name, char* buffer, size_t* size);
+UV_EXTERN int uv_os_setenv(const char* name, const char* value);
+UV_EXTERN int uv_os_unsetenv(const char* name);
+
 
 typedef enum {
   UV_FS_UNKNOWN = -1,
@@ -1284,6 +1329,9 @@ UV_EXTERN int uv_signal_init(uv_loop_t* loop, uv_signal_t* handle);
 UV_EXTERN int uv_signal_start(uv_signal_t* handle,
                               uv_signal_cb signal_cb,
                               int signum);
+UV_EXTERN int uv_signal_start_oneshot(uv_signal_t* handle,
+                                      uv_signal_cb signal_cb,
+                                      int signum);
 UV_EXTERN int uv_signal_stop(uv_signal_t* handle);
 
 UV_EXTERN void uv_loadavg(double avg[3]);

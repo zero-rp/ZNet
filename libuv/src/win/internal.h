@@ -101,6 +101,11 @@ extern UV_THREAD_LOCAL int uv__crt_assert_enabled;
 #define UV_HANDLE_PIPESERVER                    0x02000000
 #define UV_HANDLE_PIPE_READ_CANCELABLE          0x04000000
 
+/* Only used by uv_tty_t handles. */
+#define UV_HANDLE_TTY_READABLE                  0x01000000
+#define UV_HANDLE_TTY_RAW                       0x02000000
+#define UV_HANDLE_TTY_SAVED_POSITION            0x04000000
+#define UV_HANDLE_TTY_SAVED_ATTRIBUTES          0x08000000
 
 /* Only used by uv_poll_t handles. */
 #define UV_HANDLE_POLL_SLOW                     0x02000000
@@ -199,6 +204,34 @@ void uv_pipe_endgame(uv_loop_t* loop, uv_pipe_t* handle);
 
 
 /*
+ * TTY
+ */
+void uv_console_init(void);
+
+int uv_tty_read_start(uv_tty_t* handle, uv_alloc_cb alloc_cb,
+    uv_read_cb read_cb);
+int uv_tty_read_stop(uv_tty_t* handle);
+int uv_tty_write(uv_loop_t* loop, uv_write_t* req, uv_tty_t* handle,
+    const uv_buf_t bufs[], unsigned int nbufs, uv_write_cb cb);
+int uv__tty_try_write(uv_tty_t* handle, const uv_buf_t bufs[],
+    unsigned int nbufs);
+void uv_tty_close(uv_tty_t* handle);
+
+void uv_process_tty_read_req(uv_loop_t* loop, uv_tty_t* handle,
+    uv_req_t* req);
+void uv_process_tty_write_req(uv_loop_t* loop, uv_tty_t* handle,
+    uv_write_t* req);
+/* TODO: remove me */
+void uv_process_tty_accept_req(uv_loop_t* loop, uv_tty_t* handle,
+    uv_req_t* raw_req);
+/* TODO: remove me */
+void uv_process_tty_connect_req(uv_loop_t* loop, uv_tty_t* handle,
+    uv_connect_t* req);
+
+void uv_tty_endgame(uv_loop_t* loop, uv_tty_t* handle);
+
+
+/*
  * Poll watchers
  */
 void uv_process_poll_req(uv_loop_t* loop, uv_poll_t* handle,
@@ -226,7 +259,7 @@ void uv_prepare_invoke(uv_loop_t* loop);
 void uv_check_invoke(uv_loop_t* loop);
 void uv_idle_invoke(uv_loop_t* loop);
 
-void uv__once_init();
+void uv__once_init(void);
 
 
 /*
@@ -242,7 +275,7 @@ void uv_process_async_wakeup_req(uv_loop_t* loop, uv_async_t* handle,
 /*
  * Signal watcher
  */
-void uv_signals_init();
+void uv_signals_init(void);
 int uv__signal_dispatch(int signum);
 
 void uv_signal_close(uv_loop_t* loop, uv_signal_t* handle);
@@ -269,7 +302,7 @@ int uv_translate_sys_error(int sys_errno);
 /*
  * FS
  */
-void uv_fs_init();
+void uv_fs_init(void);
 
 
 /*
@@ -290,14 +323,15 @@ void uv__fs_poll_endgame(uv_loop_t* loop, uv_fs_poll_t* handle);
 /*
  * Utilities.
  */
-void uv__util_init();
+void uv__util_init(void);
 
 uint64_t uv__hrtime(double scale);
-int uv_parent_pid();
-int uv_current_pid();
+int uv_parent_pid(void);
+int uv_current_pid(void);
 __declspec(noreturn) void uv_fatal_error(const int errorno, const char* syscall);
 int uv__getpwuid_r(uv_passwd_t* pwd);
 int uv__convert_utf16_to_utf8(const WCHAR* utf16, int utf16len, char** utf8);
+int uv__convert_utf8_to_utf16(const char* utf8, int utf8len, WCHAR** utf16);
 
 
 /*
@@ -316,13 +350,13 @@ HANDLE uv__stdio_handle(BYTE* buffer, int fd);
 /*
  * Winapi and ntapi utility functions
  */
-void uv_winapi_init();
+void uv_winapi_init(void);
 
 
 /*
  * Winsock utility functions
  */
-void uv_winsock_init();
+void uv_winsock_init(void);
 
 int uv_ntstatus_to_winsock_error(NTSTATUS status);
 
@@ -347,5 +381,15 @@ extern int uv_tcp_non_ifs_lsp_ipv6;
 /* Ip address used to bind to any port at any interface */
 extern struct sockaddr_in uv_addr_ip4_any_;
 extern struct sockaddr_in6 uv_addr_ip6_any_;
+
+/*
+ * Wake all loops with fake message
+ */
+void uv__wake_all_loops(void);
+
+/*
+ * Init system wake-up detection
+ */
+void uv__init_detect_system_wakeup(void);
 
 #endif /* UV_WIN_INTERNAL_H_ */
