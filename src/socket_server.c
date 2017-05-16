@@ -1,4 +1,4 @@
-#include "skynet.h"
+ï»¿#include "skynet.h"
 #include "socket_server.h"
 #include <uv.h>
 #include <queue.h>
@@ -94,9 +94,10 @@ struct socket_server {
 	struct socket slot[MAX_SOCKET];
 	char buffer[MAX_INFO];
 	uint8_t udpbuffer[MAX_UDP_PACKAGE];
-	uv_async_t cmd_req;
-    uv_mutex_t cmd_mutex;
-    QUEUE cmd_queue;
+	uv_async_t cmd_req;//å‘½ä»¤é€šçŸ¥
+    uv_mutex_t cmd_mutex;//å‘½ä»¤äº’æ–¥
+    QUEUE cmd_queue;//å‘½ä»¤é˜Ÿåˆ—
+    uv_timer_t cmd_timer;//å®šæ—¶åˆ·æ–°å‘½ä»¤
 	void(*cb)(int code, struct socket_message *result);
 };
 
@@ -306,24 +307,24 @@ free_request_package(struct skynet_message_cmd *msg, void *u) {
 static inline int
 cmd_pop(struct socket_server *ss, struct skynet_message_cmd *msg) {
     QUEUE* q;
-    // Í¬²½
+    // åŒæ­¥
     uv_mutex_lock(&ss->cmd_mutex);
 
     if (QUEUE_EMPTY(&ss->cmd_queue))
     {
-        //¿Õ¶ÓÁÐ
+        //ç©ºé˜Ÿåˆ—
         uv_mutex_unlock(&ss->cmd_mutex);
         return 0;
     }
-    // È¡³ö¶ÓÁÐµÄÍ·²¿½Úµã£¨µÚÒ»¸ötask£©
+    // å–å‡ºé˜Ÿåˆ—çš„å¤´éƒ¨èŠ‚ç‚¹ï¼ˆç¬¬ä¸€ä¸ªtaskï¼‰
     q = QUEUE_HEAD(&ss->cmd_queue);
 
-    // ´Ó¶ÓÁÐÖÐÒÆ³ýÕâ¸ötask
+    // ä»Žé˜Ÿåˆ—ä¸­ç§»é™¤è¿™ä¸ªtask
     QUEUE_REMOVE(q);
     QUEUE_INIT(q);
     uv_mutex_unlock(&ss->cmd_mutex);
     
-    // È¡³ötask_clientÊ×µØÖ·
+    // å–å‡ºtask_clienté¦–åœ°å€
     struct skynet_message_cmd *w = QUEUE_DATA(q, struct skynet_message_cmd, wq);
     memcpy(msg, w, sizeof(w));
     free(w);
@@ -459,6 +460,13 @@ connection_cb(uv_stream_t* server, int status) {
 	}
 }
 
+static inline void
+cmd_timer_cb(uv_timer_t* handle) {
+    struct socket_server *ss = (struct socket_server *)handle->data;
+    uv_async_send(&ss->cmd_req);
+}
+
+
 struct socket_server * 
 socket_server_create(void(*cb)(int code, struct socket_message *result)) {
 	struct socket_server *ss = (struct socket_server *)MALLOC(sizeof(*ss));
@@ -474,6 +482,9 @@ socket_server_create(void(*cb)(int code, struct socket_message *result)) {
 	ss->cb = cb;
 	uv_async_init(ss->loop, &ss->cmd_req, cmd_cb);
 	ss->cmd_req.data = ss;
+    uv_timer_init(ss->loop, &ss->cmd_timer);
+    ss->cmd_timer.data = ss;
+    uv_timer_start(&ss->cmd_timer, cmd_timer_cb, 10, 10);
     uv_mutex_init(&ss->cmd_mutex);
     QUEUE_INIT(&ss->cmd_queue);
 	return ss;
@@ -517,7 +528,7 @@ socket_server_release(struct socket_server *ss) {
 		}
 	}
 	uv_close((uv_handle_t *)&ss->cmd_req, close_cb);
-	uv_run(ss->loop, UV_RUN_DEFAULT); // µÈ´ýÊÂ¼þÑ­»·×Ô¼ºÍË³ö
+	uv_run(ss->loop, UV_RUN_DEFAULT); // ç­‰å¾…äº‹ä»¶å¾ªçŽ¯è‡ªå·±é€€å‡º
 	uv_loop_delete(ss->loop);
 	//ss->cmd_queue->Release(free_request_package, NULL);
 	//delete ss->cmd_queue;
@@ -615,7 +626,7 @@ _failed:
 	return SN_SOCKET_ERROR;
 }
 
-#define MAX_SEND_BUF 1 // ÕâÀïÔÝÊ±Ö»ÉèÖÃÎª1£¬ÒòÎªwrite_cb_Àï²»ÖªµÀ¸ÃÔõÃ´µÃµ½ÕâÒ»´Î·¢ËÍµÄ×ÜbufÊý
+#define MAX_SEND_BUF 1 // è¿™é‡Œæš‚æ—¶åªè®¾ç½®ä¸º1ï¼Œå› ä¸ºwrite_cb_é‡Œä¸çŸ¥é“è¯¥æ€Žä¹ˆå¾—åˆ°è¿™ä¸€æ¬¡å‘é€çš„æ€»bufæ•°
 static int
 send_list_tcp(struct socket_server *ss, struct socket *s, struct wb_list *list, struct socket_message *result) {
 	if (s->write) return -1;
@@ -845,7 +856,7 @@ listen_socket(struct socket_server *ss, struct request_listen * request, struct 
 		uv_close((uv_handle_t *)&s->s.tcp, close_cb);
 		return SOCKET_ERROR;
 	}
-	s->s.tcp.data = (void *)request->backlog; // °Ñbacklog´æÔÚdataÀïÃæ
+	s->s.tcp.data = (void *)request->backlog; // æŠŠbacklogå­˜åœ¨dataé‡Œé¢
 	s->type = SOCKET_TYPE_PLISTEN;
 	return -1;
 _failed:
@@ -1109,9 +1120,9 @@ send_request(struct socket_server *ss, struct request_package *request, char typ
 	msg->data = MALLOC(sizeof(*request));
 	memcpy(msg->data, request, sizeof(*request));
 	msg->sz = sizeof(*request);
-    // Í¬²½
+    // åŒæ­¥
     uv_mutex_lock(&ss->cmd_mutex);
-    // ½«task²åÈë¶ÓÁÐÎ²²¿
+    // å°†taskæ’å…¥é˜Ÿåˆ—å°¾éƒ¨
     QUEUE_INSERT_TAIL(&ss->cmd_queue, &msg->wq);
     uv_mutex_unlock(&ss->cmd_mutex);
 	uv_async_send(&ss->cmd_req);

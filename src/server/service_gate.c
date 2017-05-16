@@ -243,6 +243,8 @@ dispatch_socket_message(struct gate *g, const struct skynet_socket_message * mes
 		if (id>=0) {
 			struct connection *c = &g->conn[id];
 			databuffer_clear(&c->buffer,&g->mp);
+            //异常退出直接关闭socket
+            skynet_socket_close(ctx, c->id);
 			memset(c, 0, sizeof(*c));
 			c->id = -1;
 			_report(g, "%d close", message->id);

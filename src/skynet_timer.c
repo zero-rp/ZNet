@@ -334,7 +334,7 @@ skynet_thread_time(void) {
 }
 
     return (uint64_t)(aTaskInfo.user_time.seconds) + (uint64_t)aTaskInfo.user_time.microseconds;
-#elif defined(WIN32)
+#elif defined(WIN32) || defined(WIN64)
     //return uv_hrtime();
     LARGE_INTEGER counter;
 
@@ -349,7 +349,7 @@ skynet_thread_time(void) {
     //return (uint64_t)ti.tv_sec * MICROSEC + (uint64_t)ti.tv_nsec / (NANOSEC / MICROSEC);
 #endif
 }
-#if defined(WIN32)
+#if defined(WIN32) || defined(WIN64)
 void usleep(uint32_t us)
 {
     LARGE_INTEGER litmp;

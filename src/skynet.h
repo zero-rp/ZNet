@@ -6,6 +6,23 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#if defined(WIN32) || defined(WIN64)
+# if defined(BUILDING)
+/* Building shared library. */
+#   define SKYNET_EXTERN __declspec(dllexport)
+# elif defined(USING)
+/* Using shared library. */
+#   define SKYNET_EXTERN __declspec(dllimport)
+# else
+/* Building static library. */
+#   define SKYNET_EXTERN /* nothing */
+# endif
+#elif __GNUC__ >= 4
+# define SKYNET_EXTERN __attribute__((visibility("default")))
+#else
+# define SKYNET_EXTERN /* nothing */
+#endif
+
 #define PTYPE_TEXT 0
 #define PTYPE_RESPONSE 1
 #define PTYPE_MULTICAST 2
@@ -26,22 +43,23 @@
 
 struct skynet_context;
 
-void skynet_error(struct skynet_context * context, const char *msg, ...);
-const char * skynet_command(struct skynet_context * context, const char * cmd , const char * parm);
-uint32_t skynet_queryname(struct skynet_context * context, const char * name);
-int skynet_send(struct skynet_context * context, uint32_t source, uint32_t destination , int type, int session, void * msg, size_t sz);
-int skynet_sendname(struct skynet_context * context, uint32_t source, const char * destination , int type, int session, void * msg, size_t sz);
+SKYNET_EXTERN void skynet_error(struct skynet_context * context, const char *msg, ...);
+SKYNET_EXTERN const char * skynet_command(struct skynet_context * context, const char * cmd , const char * parm);
+SKYNET_EXTERN uint32_t skynet_queryname(struct skynet_context * context, const char * name);
+SKYNET_EXTERN int skynet_send(struct skynet_context * context, uint32_t source, uint32_t destination , int type, int session, void * msg, size_t sz);
+SKYNET_EXTERN int skynet_sendname(struct skynet_context * context, uint32_t source, const char * destination , int type, int session, void * msg, size_t sz);
 
-int skynet_isremote(struct skynet_context *, uint32_t handle, int * harbor);
+SKYNET_EXTERN int skynet_isremote(struct skynet_context *, uint32_t handle, int * harbor);
 
-typedef int (*skynet_cb)(struct skynet_context * context, void *ud, int type, int session, uint32_t source , const void * msg, size_t sz);
-void skynet_callback(struct skynet_context * context, void *ud, skynet_cb cb);
+SKYNET_EXTERN typedef int (*skynet_cb)(struct skynet_context * context, void *ud, int type, int session, uint32_t source , const void * msg, size_t sz);
+SKYNET_EXTERN void skynet_callback(struct skynet_context * context, void *ud, skynet_cb cb);
 
-uint32_t skynet_current_handle(void);
-uint64_t skynet_now(void);
-void skynet_debug_memory(const char *info);	// for debug use, output current service memory to stderr
-#if defined(WIN32)
-void usleep(uint32_t us);
+SKYNET_EXTERN uint32_t skynet_current_handle(void);
+SKYNET_EXTERN uint64_t skynet_now(void);
+SKYNET_EXTERN void skynet_debug_memory(const char *info);	// for debug use, output current service memory to stderr
+#if defined(WIN32) || defined(WIN64)
+SKYNET_EXTERN void usleep(uint32_t us);
+SKYNET_EXTERN char *strsep(char **s, const char *ct);
 #endif
 
 #endif

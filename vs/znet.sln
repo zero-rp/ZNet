@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "znet", "znet\znet.vcxproj", "{58DFF972-C7B0-4D3D-9689-4FD3BB3E95EC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "lua\lua.vcxproj", "{A6A3BABA-1C14-42C9-A389-EA644A9FF7E0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "library", "library\library.vcxproj", "{8DE190A9-0FBC-4381-8390-2F3129151487}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,14 @@ Global
 		{A6A3BABA-1C14-42C9-A389-EA644A9FF7E0}.Release|x64.Build.0 = Release|x64
 		{A6A3BABA-1C14-42C9-A389-EA644A9FF7E0}.Release|x86.ActiveCfg = Release|Win32
 		{A6A3BABA-1C14-42C9-A389-EA644A9FF7E0}.Release|x86.Build.0 = Release|Win32
+		{8DE190A9-0FBC-4381-8390-2F3129151487}.Debug|x64.ActiveCfg = Debug|x64
+		{8DE190A9-0FBC-4381-8390-2F3129151487}.Debug|x64.Build.0 = Debug|x64
+		{8DE190A9-0FBC-4381-8390-2F3129151487}.Debug|x86.ActiveCfg = Debug|Win32
+		{8DE190A9-0FBC-4381-8390-2F3129151487}.Debug|x86.Build.0 = Debug|Win32
+		{8DE190A9-0FBC-4381-8390-2F3129151487}.Release|x64.ActiveCfg = Release|x64
+		{8DE190A9-0FBC-4381-8390-2F3129151487}.Release|x64.Build.0 = Release|x64
+		{8DE190A9-0FBC-4381-8390-2F3129151487}.Release|x86.ActiveCfg = Release|Win32
+		{8DE190A9-0FBC-4381-8390-2F3129151487}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
