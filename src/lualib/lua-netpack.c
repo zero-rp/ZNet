@@ -1,7 +1,5 @@
 #define LUA_LIB
-
-#include "skynet_malloc.h"
-
+#include "skynet.h"
 #include "skynet_socket.h"
 
 #include <lua.h>

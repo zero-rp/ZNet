@@ -1,7 +1,6 @@
 #define LUA_LIB
 
-#include "../skynet_malloc.h"
-
+#include "skynet.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>

@@ -95,15 +95,15 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;ENABLE_SHORT_STRING_TABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;BUILDING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;jemalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\tool;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -113,15 +113,15 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WIN64;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;ENABLE_SHORT_STRING_TABLE;BUILDING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WIN64;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;BUILDING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;jemalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\tool;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -130,27 +130,27 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;BUILDING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
       <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\tool;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;jemalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -161,10 +161,10 @@
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;WIN64;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;ENABLE_SHORT_STRING_TABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;WIN64;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;BUILDING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <StringPooling>true</StringPooling>
@@ -176,9 +176,9 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\tool;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;jemalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -293,7 +293,6 @@
     <ClInclude Include="..\..\src\skynet_harbor.h" />
     <ClInclude Include="..\..\src\skynet_imp.h" />
     <ClInclude Include="..\..\src\skynet_log.h" />
-    <ClInclude Include="..\..\src\skynet_malloc.h" />
     <ClInclude Include="..\..\src\skynet_module.h" />
     <ClInclude Include="..\..\src\skynet_monitor.h" />
     <ClInclude Include="..\..\src\skynet_mq.h" />

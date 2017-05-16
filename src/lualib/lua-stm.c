@@ -8,7 +8,7 @@
 #include <string.h>
 
 #include <uv.h>
-#include "skynet_malloc.h"
+#include "skynet.h"
 #include "atomic.h"
 
 struct stm_object {

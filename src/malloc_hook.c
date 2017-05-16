@@ -21,9 +21,11 @@ typedef struct _mem_data {
 
 static mem_data mem_stats[SLOT_SIZE];
 
-#define NOUSE_JEMALLOC
-#ifndef NOUSE_JEMALLOC
 
+#ifndef NOUSE_JEMALLOC
+#ifdef _MSC_VER
+typedef intptr_t ssize_t;
+#endif
 #include "jemalloc.h"
 
 // for skynet_lalloc use
@@ -229,10 +231,10 @@ skynet_strdup(const char *str) {
 void * 
 skynet_lalloc(void *ptr, size_t osize, size_t nsize) {
 	if (nsize == 0) {
-		raw_free(ptr);
+		skynet_free(ptr);
 		return NULL;
 	} else {
-		return raw_realloc(ptr, nsize);
+		return skynet_realloc(ptr, nsize);
 	}
 }
 

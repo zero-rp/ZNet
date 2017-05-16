@@ -1,8 +1,6 @@
 #ifndef SKYNET_H
 #define SKYNET_H
 
-#include "skynet_malloc.h"
-
 #include <stddef.h>
 #include <stdint.h>
 
@@ -61,5 +59,22 @@ SKYNET_EXTERN void skynet_debug_memory(const char *info);	// for debug use, outp
 SKYNET_EXTERN void usleep(uint32_t us);
 SKYNET_EXTERN char *strsep(char **s, const char *ct);
 #endif
+
+
+#include <stddef.h>
+#include <malloc.h>
+#ifdef NOUSE_JEMALLOC
+#define skynet_malloc malloc
+#define skynet_calloc calloc
+#define skynet_realloc realloc
+#define skynet_free free
+#else
+SKYNET_EXTERN void * skynet_malloc(size_t sz);
+SKYNET_EXTERN void * skynet_calloc(size_t nmemb, size_t size);
+SKYNET_EXTERN void * skynet_realloc(void *ptr, size_t size);
+SKYNET_EXTERN void skynet_free(void *ptr);
+#endif
+SKYNET_EXTERN char * skynet_strdup(const char *str);
+SKYNET_EXTERN void * skynet_lalloc(void *ptr, size_t osize, size_t nsize);	// use for lua
 
 #endif

@@ -4,7 +4,7 @@
 
 #define LUA_LIB
 
-#include "skynet_malloc.h"
+#include "skynet.h"
 
 #include <lua.h>
 #include <lauxlib.h>

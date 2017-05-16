@@ -327,7 +327,7 @@ cmd_pop(struct socket_server *ss, struct skynet_message_cmd *msg) {
     // 取出task_client首地址
     struct skynet_message_cmd *w = QUEUE_DATA(q, struct skynet_message_cmd, wq);
     memcpy(msg, w, sizeof(w));
-    free(w);
+    FREE(w);
     return 1;
 }
 

@@ -21,5 +21,6 @@
 #define ATOM_AND(ptr,n) InterlockedAnd(ptr,n)
 #define ATOM_CAS(ptr, oval, nval) (InterlockedCompareExchange(ptr, nval, oval)!=nval)
 #define ATOM_CAS16(ptr, oval, nval) (InterlockedCompareExchange16(ptr, nval, oval)!=nval)
-#define ATOM_FINC(ptr) InterlockedIncrement((ptr))
+#define ATOM_FINC(ptr) InterlockedExchangeAdd((ptr),1)
+#define ATOM_SUB(ptr,n) InterlockedExchangeAdd      (ptr,-(n)) 
 #endif
