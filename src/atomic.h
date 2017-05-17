@@ -14,13 +14,17 @@
 
 #endif // !MSVC
 #include <Windows.h>
+
 #define ATOM_INC(ptr) InterlockedIncrement((ptr))
 #define ATOM_DEC(ptr) InterlockedDecrement((ptr))
 #define ATOM_ADD(ptr,n) InterlockedAdd(ptr, n)
-#define ATOM_CAS_POINTER(ptr, oval, nval) InterlockedCompareExchangePointer(ptr, nval, oval)
 #define ATOM_AND(ptr,n) InterlockedAnd(ptr,n)
+
+
+#define ATOM_CAS_POINTER(ptr, oval, nval) InterlockedCompareExchangePointer(ptr, nval, oval)//log
 #define ATOM_CAS(ptr, oval, nval) (InterlockedCompareExchange(ptr, nval, oval)!=nval)
 #define ATOM_CAS16(ptr, oval, nval) (InterlockedCompareExchange16(ptr, nval, oval)!=nval)
-#define ATOM_FINC(ptr) InterlockedExchangeAdd((ptr),1)
-#define ATOM_SUB(ptr,n) InterlockedExchangeAdd      (ptr,-(n)) 
+#define ATOM_FINC(ptr) InterlockedIncrement((ptr))
+#define ATOM_SUB(ptr,n) InterlockedExchangeAdd64      (ptr,-(ssize_t)(n)) 
+
 #endif

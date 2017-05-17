@@ -75,12 +75,42 @@ spinlock_destroy(struct spinlock *lock) {
 
 #endif
 #else
-#include <windows.h>
-#define SPIN_INIT(q) InitializeCriticalSection(&(q)->lock);
-#define SPIN_LOCK(q) EnterCriticalSection(&(q)->lock);
-#define SPIN_UNLOCK(q) LeaveCriticalSection(&(q)->lock);
-#define SPIN_DESTROY(q) 
 
-#define spinlock CRITICAL_SECTION
+#include <windows.h>
+
+#define SPIN_INIT(q) spinlock_init(&(q)->lock);
+#define SPIN_LOCK(q) spinlock_lock(&(q)->lock);
+#define SPIN_UNLOCK(q) spinlock_unlock(&(q)->lock);
+#define SPIN_DESTROY(q) spinlock_destroy(&(q)->lock);
+
+typedef struct _spinlock {
+    int lock;
+}spinlock;
+
+static inline void
+spinlock_init(spinlock *lock) {
+    lock->lock = 0;
+}
+
+static inline void
+spinlock_lock(spinlock *lock) {
+    while (InterlockedExchange(&lock->lock, 1)) {}
+}
+
+static inline int
+spinlock_trylock(spinlock *lock) {
+    return InterlockedExchange(&lock->lock, 1) == 0;
+}
+
+static inline void
+spinlock_unlock(spinlock *lock) {
+    InterlockedExchange(&lock->lock,0);
+}
+
+static inline void
+spinlock_destroy(struct spinlock *lock) {
+    (void)lock;
+}
+
 #endif
 #endif
