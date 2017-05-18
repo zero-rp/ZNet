@@ -1,5 +1,5 @@
 #define LUA_LIB
-
+#include <skynet.h>
 // only for debug use
 #include <lua.h>
 #include <lauxlib.h>

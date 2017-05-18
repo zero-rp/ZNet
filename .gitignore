@@ -37,3 +37,5 @@ vs/.vs/*
 *.db
 *.exp
 tool/admin.bak
+*.iobj
+*.ipdb

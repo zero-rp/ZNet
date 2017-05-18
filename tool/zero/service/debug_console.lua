@@ -9,7 +9,7 @@ local sockethelper = require "http.sockethelper"
 
 local arg = table.pack(...)
 assert(arg.n <= 2)
-local ip = (arg.n == 2 and arg[1] or "0.0.0.0")
+local ip = (arg.n == 2 and arg[1] or "127.0.0.1")
 local port = tonumber(arg[arg.n])
 
 local COMMAND = {}
@@ -96,13 +96,6 @@ local function console_main_loop(stdin, print)
 		while true do
 			local cmdline = socket.readline(stdin, "\n")
 			if not cmdline then
-				break
-			end
-			if cmdline:sub(1,4) == "GET " then
-				-- http
-				local code, url = httpd.read_request(sockethelper.readfunc(stdin, cmdline.. "\n"), 8192)
-				local cmdline = url:sub(2):gsub("/"," ")
-				docmd(cmdline, print, stdin)
 				break
 			end
 			if cmdline ~= "" then
