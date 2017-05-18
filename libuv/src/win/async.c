@@ -96,3 +96,16 @@ void uv_process_async_wakeup_req(uv_loop_t* loop, uv_async_t* handle,
     handle->async_cb(handle);
   }
 }
+
+
+int uv_async_q_init(uv_loop_t* loop, uv_async_q_t* async, uv_async_cb async_cb) {
+
+
+}
+int uv_async_req_init(uv_async_q_t* async, uv_async_req_t *req) {
+
+}
+int uv_async_q_send(uv_async_q_t* async, uv_async_req_t *req) {
+
+
+}

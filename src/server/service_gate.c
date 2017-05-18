@@ -1,4 +1,4 @@
-#include "skynet.h"
+﻿#include "skynet.h"
 #include "skynet_socket.h"
 #include "databuffer.h"
 #include "hashid.h"
@@ -231,6 +231,7 @@ dispatch_socket_message(struct gate *g, const struct skynet_socket_message * mes
 			break;
 		}
 		int id = hashid_lookup(&g->hash, message->id);
+        skynet_error(ctx, "CONNECT %d", message->id);
 		if (id<0) {
 			skynet_error(ctx, "Close unknown connection %d", message->id);
 			skynet_socket_close(ctx, message->id);
@@ -243,7 +244,7 @@ dispatch_socket_message(struct gate *g, const struct skynet_socket_message * mes
 		if (id>=0) {
 			struct connection *c = &g->conn[id];
 			databuffer_clear(&c->buffer,&g->mp);
-            //�쳣�˳�ֱ�ӹر�socket
+            //异常退出直接关闭socket
             skynet_socket_close(ctx, c->id);
 			memset(c, 0, sizeof(*c));
 			c->id = -1;
@@ -264,7 +265,8 @@ dispatch_socket_message(struct gate *g, const struct skynet_socket_message * mes
 			c->id = message->ud;
 			memcpy(c->remote_name, message+1, sz);
 			c->remote_name[sz] = '\0';
-			_report(g, "%d open %d %s:0",c->id, c->id, c->remote_name);
+			//通知watchdog连接到达
+            _report(g, "%d open %d %s:0",c->id, c->id, c->remote_name);
 			skynet_error(ctx, "socket open: %x", c->id);
 		}
 		break;

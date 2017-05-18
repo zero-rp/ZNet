@@ -21,6 +21,7 @@
 
 #include "server/service_logger.h"
 #include "server/service_snlua.h"
+#include "server/service_snjs.h"
 #include "server/service_harbor.h"
 #include "server/service_gate.h"
 
@@ -40,7 +41,6 @@ struct worker_parm {
 };
 
 static int SIG = 0;
-
 static void
 handle_hup(int signal) {
 	if (signal == SIGHUP) {
@@ -64,9 +64,7 @@ wakeup(struct monitor *m, int busy) {
 		uv_cond_signal(&m->cond);
 	}
 }
-void socket_timer(uv_timer_t* handle) {
-    wakeup(handle->data, 0);
-}
+
 static void 
 thread_socket(void *p) {
     struct monitor * m = p;
@@ -258,7 +256,17 @@ static void skynet_module_reg() {
     mod->init = snlua_init;
     mod->release = snlua_release;
     mod->create = snlua_create;
+    mod->signal = snlua_signal;
     mod->name = "snlua";
+    mod->module = NULL;
+    skynet_module_insert(mod);
+
+    mod = malloc(sizeof(*mod));
+    mod->init = snjs_init;
+    mod->release = snjs_release;
+    mod->create = snjs_create;
+    mod->signal = snjs_signal;
+    mod->name = "snjs";
     mod->module = NULL;
     skynet_module_insert(mod);
 

@@ -210,6 +210,8 @@ typedef struct uv_prepare_s uv_prepare_t;
 typedef struct uv_check_s uv_check_t;
 typedef struct uv_idle_s uv_idle_t;
 typedef struct uv_async_s uv_async_t;
+typedef struct uv_async_req_s uv_async_req_t;
+typedef struct uv_async_q_s uv_async_q_t;
 typedef struct uv_process_s uv_process_t;
 typedef struct uv_fs_event_s uv_fs_event_t;
 typedef struct uv_fs_poll_s uv_fs_poll_t;
@@ -765,12 +767,26 @@ struct uv_async_s {
   UV_ASYNC_PRIVATE_FIELDS
 };
 
+struct uv_async_q_s {
+    UV_HANDLE_FIELDS
+    
+    void *wq;
+};
+
+struct uv_async_req_s {
+    UV_ASYNC_PRIVATE_FIELDS
+    void *wq;
+};
 UV_EXTERN int uv_async_init(uv_loop_t*,
                             uv_async_t* async,
                             uv_async_cb async_cb);
 UV_EXTERN int uv_async_send(uv_async_t* async);
 
-
+UV_EXTERN int uv_async_q_init(uv_loop_t*,
+    uv_async_q_t* async,
+    uv_async_cb async_cb);
+UV_EXTERN int uv_async_req_init(uv_async_q_t* async, uv_async_req_t *req);
+UV_EXTERN int uv_async_q_send(uv_async_q_t* async, uv_async_req_t *req);
 /*
  * uv_timer_t is a subclass of uv_handle_t.
  *

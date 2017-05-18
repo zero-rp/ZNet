@@ -252,6 +252,9 @@
     <ClCompile Include="..\..\libuv\src\win\detect-wakeup.c">
       <Filter>libuv\src\win</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\server\service_snjs.c">
+      <Filter>src\server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\libuv\src\heap-inl.h">
@@ -378,6 +381,9 @@
       <Filter>src\server</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\server\service_gate.h">
+      <Filter>src\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\server\service_snjs.h">
       <Filter>src\server</Filter>
     </ClInclude>
   </ItemGroup>

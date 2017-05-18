@@ -304,47 +304,48 @@ free_request_package(struct skynet_message_cmd *msg, void *u) {
 	FREE(r);
 }
 
-static inline int
-cmd_pop(struct socket_server *ss, struct skynet_message_cmd *msg) {
-    QUEUE* q;
-    // 同步
-    uv_mutex_lock(&ss->cmd_mutex);
-
-    if (QUEUE_EMPTY(&ss->cmd_queue))
-    {
-        //空队列
-        uv_mutex_unlock(&ss->cmd_mutex);
-        return 0;
-    }
-    // 取出队列的头部节点（第一个task）
-    q = QUEUE_HEAD(&ss->cmd_queue);
-
-    // 从队列中移除这个task
-    QUEUE_REMOVE(q);
-    QUEUE_INIT(q);
-    uv_mutex_unlock(&ss->cmd_mutex);
-    
-    // 取出task_client首地址
-    struct skynet_message_cmd *w = QUEUE_DATA(q, struct skynet_message_cmd, wq);
-    memcpy(msg, w, sizeof(w));
-    FREE(w);
-    return 1;
-}
 
 static inline void
 cmd_cb(uv_async_t* handle) {
 	struct socket_message result;
 	struct skynet_message_cmd msg;
 	struct socket_server *ss = (struct socket_server *)handle->data;
-	while (cmd_pop(ss, &msg)) {
-		struct request_package *r = (struct request_package *)msg.data;
-		int ret = ctrl_cmd(ss, r->header[6], r->header[7], r->u.buffer, &result);
-		free_request_package(&msg, NULL);
-		if (ret != -1) {
-			ss->cb(ret, &result);
-			break;
-		}
-	}
+    while (true)
+    {
+        QUEUE* q;
+        // 同步
+        uv_mutex_lock(&ss->cmd_mutex);
+
+        if (QUEUE_EMPTY(&ss->cmd_queue))
+        {
+            //空队列
+            uv_mutex_unlock(&ss->cmd_mutex);
+            break;
+        }
+        // 取出队列的头部节点（第一个task）
+        q = QUEUE_HEAD(&ss->cmd_queue);
+
+        // 从队列中移除这个task
+        QUEUE_REMOVE(q);
+        uv_mutex_unlock(&ss->cmd_mutex);
+
+        // 取出task_client首地址
+        struct skynet_message_cmd *w = QUEUE_DATA(q, struct skynet_message_cmd, wq);
+
+        memcpy(&msg, w, sizeof(msg));
+
+        struct request_package *r = (struct request_package *)msg.data;
+        int ret = ctrl_cmd(ss, r->header[6], r->header[7], r->u.buffer, &result);
+        free_request_package(&msg, NULL);
+        if (ret != -1) {
+            ss->cb(ret, &result);
+            break;
+        }
+
+
+
+        FREE(w);
+    }
 }
 
 static inline void
@@ -482,9 +483,11 @@ socket_server_create(void(*cb)(int code, struct socket_message *result)) {
 	ss->cb = cb;
 	uv_async_init(ss->loop, &ss->cmd_req, cmd_cb);
 	ss->cmd_req.data = ss;
+
     uv_timer_init(ss->loop, &ss->cmd_timer);
     ss->cmd_timer.data = ss;
-    uv_timer_start(&ss->cmd_timer, cmd_timer_cb, 10, 10);
+    //uv_timer_start(&ss->cmd_timer, cmd_cb, 10, 10);
+
     uv_mutex_init(&ss->cmd_mutex);
     QUEUE_INIT(&ss->cmd_queue);
 	return ss;
@@ -1102,6 +1105,7 @@ report_accept(struct socket_server *ss, struct socket *s, struct socket_message 
 		sprintf(ss->buffer, "%s:%d", tmp, sin_port);
 		result->data = ss->buffer;
 	}
+    skynet_error(NULL, "accept %d", id);
 	return 1;
 }
 

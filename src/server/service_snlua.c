@@ -1,4 +1,4 @@
-#include "skynet.h"
+ï»¿#include "skynet.h"
 
 #include <lua.h>
 #include <lualib.h>
@@ -102,7 +102,7 @@ init_cb(struct snlua *l, struct skynet_context *ctx, const char * args, size_t s
 	luaL_requiref(L, "skynet.codecache", codecache , 0);
 	lua_pop(L,1);
 
-    //¼ÓÔØÄÚÖÃ¿â
+    //åŠ è½½å†…ç½®åº“
     luaopen_skynet_core(L);
     luaopen_profile(L);
     luaopen_memory(L);
@@ -117,9 +117,9 @@ init_cb(struct snlua *l, struct skynet_context *ctx, const char * args, size_t s
     luaopen_multicast_core(L);
     luaopen_debugchannel(L);
     luaopen_cluster_core(L);
-    luaopen_clientsocket(L);
+    //luaopen_clientsocket(L);
     luaopen_bson(L);
-    //ÄÚÖÃ¿â¼ÓÔØÍê±Ï
+    //å†…ç½®åº“åŠ è½½å®Œæ¯•
 
 	const char *path = optstring(ctx, "lua_path","./lualib/?.lua;./lualib/?/init.lua");
 	lua_pushstring(L, path);

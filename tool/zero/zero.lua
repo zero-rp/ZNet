@@ -9,7 +9,8 @@ skynet.start(function()
 	skynet.newservice("debug_console",8000)
 	--启动watchdog
 	skynet.launch("watchdog", "0.0.0.0", 8888, max_client)
-	
+	--启动js脚本
+	skynet.launch("snjs", "test")
 	--local watchdog = skynet.newservice("watchdog")
 	--skynet.call(watchdog, "lua", "start", {
 	--	ip = "0.0.0.0",
