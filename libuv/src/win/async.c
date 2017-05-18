@@ -20,6 +20,7 @@
  */
 
 #include <assert.h>
+#include <malloc.h>
 
 #include "uv.h"
 #include "internal.h"
@@ -74,10 +75,14 @@ int uv_async_send(uv_async_t* handle) {
   /* The user should make sure never to call uv_async_send to a closing */
   /* or closed handle. */
   assert(!(handle->flags & UV__HANDLE_CLOSING));
+  
+  struct uv_req_s *req = (void *)malloc(sizeof(*req));
+  UV_REQ_INIT(req, UV_WAKEUP);
+  req->data = handle;
 
-  if (!uv__atomic_exchange_set(&handle->async_sent)) {
-    POST_COMPLETION_FOR_REQ(loop, &handle->async_req);
-  }
+  //if (!uv__atomic_exchange_set(&handle->async_sent)) {
+    POST_COMPLETION_FOR_REQ(loop, req);
+  //}
 
   return 0;
 }
@@ -95,17 +100,6 @@ void uv_process_async_wakeup_req(uv_loop_t* loop, uv_async_t* handle,
   } else if (handle->async_cb != NULL) {
     handle->async_cb(handle);
   }
+  free(req);
 }
 
-
-int uv_async_q_init(uv_loop_t* loop, uv_async_q_t* async, uv_async_cb async_cb) {
-
-
-}
-int uv_async_req_init(uv_async_q_t* async, uv_async_req_t *req) {
-
-}
-int uv_async_q_send(uv_async_q_t* async, uv_async_req_t *req) {
-
-
-}
