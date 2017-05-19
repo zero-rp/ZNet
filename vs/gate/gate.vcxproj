@@ -19,19 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\library\tree.c" />
-    <ClCompile Include="..\..\library\watchdog.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\library\tree.h" />
+    <ClCompile Include="..\..\library\service_gate.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{0B91BC76-B720-4A75-BBE3-E6F5B5239B10}</ProjectGuid>
+    <ProjectGuid>{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>library</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>watchdog</ProjectName>
+    <ProjectName>gate</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -104,12 +100,12 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;WIN64;_USRDLL;LIBRARY_EXPORTS;USING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;LIBRARY_EXPORTS;USING;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>$(SolutionDir)..\tool\zero\watchdog.dll</OutputFile>
+      <OutputFile>$(SolutionDir)..\tool\zero\gate.dll</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)..\bin\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>znet.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -150,7 +146,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>znet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\bin\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <OutputFile>$(SolutionDir)..\tool\zero\watchdog.dll</OutputFile>
+      <OutputFile>$(SolutionDir)..\tool\zero\gate.dll</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -158,15 +154,14 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;LIBRARY_EXPORTS;WIN64;NOUSE_JEMALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;WIN64;LIBRARY_EXPORTS;NOUSE_JEMALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../src</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -174,8 +169,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>znet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\bin\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <OutputFile>$(SolutionDir)..\tool\zero\watchdog.dll</OutputFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>$(SolutionDir)..\tool\zero\gate.dll</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

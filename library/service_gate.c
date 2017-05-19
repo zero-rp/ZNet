@@ -35,7 +35,7 @@ struct gate {
 	struct messagepool mp;
 };
 
-struct gate *
+SKYNET_MODULE struct gate *
 gate_create(void) {
 	struct gate * g = skynet_malloc(sizeof(*g));
 	memset(g,0,sizeof(*g));
@@ -43,7 +43,7 @@ gate_create(void) {
 	return g;
 }
 
-void
+SKYNET_MODULE void
 gate_release(struct gate *g) {
 	int i;
 	struct skynet_context *ctx = g->ctx;
@@ -339,7 +339,7 @@ start_listen(struct gate *g, char * listen_addr) {
 	return 0;
 }
 
-int
+SKYNET_MODULE int 
 gate_init(struct gate *g , struct skynet_context * ctx, char * parm) {
 	if (parm == NULL)
 		return 1;

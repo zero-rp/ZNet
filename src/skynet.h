@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #if defined(WIN32) || defined(WIN64)
+
 # if defined(BUILDING)
 /* Building shared library. */
 #   define SKYNET_EXTERN __declspec(dllexport)
@@ -15,6 +16,9 @@
 /* Building static library. */
 #   define SKYNET_EXTERN /* nothing */
 # endif
+
+#   define SKYNET_MODULE __declspec(dllexport)
+
 #elif __GNUC__ >= 4
 # define SKYNET_EXTERN __attribute__((visibility("default")))
 #else

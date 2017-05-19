@@ -23,7 +23,6 @@
 #include "server/service_snlua.h"
 #include "server/service_snjs.h"
 #include "server/service_harbor.h"
-#include "server/service_gate.h"
 
 struct monitor {
 	int count;
@@ -275,14 +274,6 @@ static void skynet_module_reg() {
     mod->release = harbor_release;
     mod->create = harbor_create;
     mod->name = "harbor";
-    mod->module = NULL;
-    skynet_module_insert(mod);
-
-    mod = malloc(sizeof(*mod));
-    mod->init = gate_init;
-    mod->release = gate_release;
-    mod->create = gate_create;
-    mod->name = "gate";
     mod->module = NULL;
     skynet_module_insert(mod);
 }

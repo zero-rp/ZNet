@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "agent", "agent\agent.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "duktape", "duktape\duktape.vcxproj", "{3E8ECA6A-9348-4A8F-92DC-CF9D04021338}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gate", "gate\gate.vcxproj", "{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -73,6 +75,14 @@ Global
 		{3E8ECA6A-9348-4A8F-92DC-CF9D04021338}.Release|x64.Build.0 = Release|x64
 		{3E8ECA6A-9348-4A8F-92DC-CF9D04021338}.Release|x86.ActiveCfg = Release|Win32
 		{3E8ECA6A-9348-4A8F-92DC-CF9D04021338}.Release|x86.Build.0 = Release|Win32
+		{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8}.Debug|x64.ActiveCfg = Debug|x64
+		{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8}.Debug|x64.Build.0 = Debug|x64
+		{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8}.Debug|x86.ActiveCfg = Debug|Win32
+		{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8}.Debug|x86.Build.0 = Debug|Win32
+		{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8}.Release|x64.ActiveCfg = Release|x64
+		{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8}.Release|x64.Build.0 = Release|x64
+		{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8}.Release|x86.ActiveCfg = Release|Win32
+		{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +90,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0B91BC76-B720-4A75-BBE3-E6F5B5239B10} = {AF4285F7-0125-4DDC-897F-4316F7EA8646}
 		{8DE190A9-0FBC-4381-8390-2F3129151487} = {AF4285F7-0125-4DDC-897F-4316F7EA8646}
+		{0AAD3B43-8FBC-43B4-8674-D054DE00BEA8} = {AF4285F7-0125-4DDC-897F-4316F7EA8646}
 	EndGlobalSection
 EndGlobal

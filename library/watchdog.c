@@ -57,6 +57,10 @@ _ctrl(struct watchdog * g, const void * msg, int sz) {
 
         //启动agent服务
         const char * gate_self = skynet_command(ctx, "LAUNCH", tmp);
+        if (gate_self == NULL) {
+            skynet_error(ctx, "Invalid LAUNCH agent");
+            return 1;
+        }
         uint32_t gate = skynet_queryname(ctx, gate_self);
         
         rb_insert(id, gate, g->agent);
@@ -96,24 +100,25 @@ _cb(struct skynet_context * ctx, void * ud, int type, int session, uint32_t sour
     return 0;
 }
 
-__declspec(dllexport) struct watchdog *watchdog_create(void){
+SKYNET_MODULE struct watchdog *watchdog_create(void){
     struct watchdog * g = skynet_malloc(sizeof(*g));
     memset(g, 0, sizeof(*g));
     g->agent = rb_new();
     g->gate = -1;
     return g;
 }
-__declspec(dllexport) void watchdog_release(struct watchdog *g){
+SKYNET_MODULE void watchdog_release(struct watchdog *g){
     rb_free(g->agent);
     skynet_free(g);
 }
-__declspec(dllexport) int watchdog_init(struct watchdog *g, struct skynet_context * ctx, char * parm){
+SKYNET_MODULE int watchdog_init(struct watchdog *g, struct skynet_context * ctx, char * parm){
     if (parm == NULL)
         return 1;
     int sz = strlen(parm) + 1;
     char *ip = alloca(sz);
     int port = 0;
     int max = 0;
+    //得到初始化参数,监听ip,端口,最大连接数
     int n = sscanf(parm, "%s %d %d", ip, &port, &max);
 
     if (ip == 0) {
@@ -131,18 +136,22 @@ __declspec(dllexport) int watchdog_init(struct watchdog *g, struct skynet_contex
         return 1;
     }
 
+    //设置回调地址
     skynet_callback(ctx, g, _cb);
 
     g->ctx = ctx;
-
+    //注册服务
     const char * self = skynet_command(ctx, "REG", NULL);
     g->self = strtoul(self + 1, NULL, 16);
 
+    //启动gate服务
     char tmp[1024];
     n = snprintf(tmp, sizeof(tmp), "gate S  %s %d 0 %d", self, port, max);
-
-    //启动gate服务
     const char * gate = skynet_command(ctx, "LAUNCH", tmp);
+    if (gate == NULL) {
+        skynet_error(ctx, "Invalid LAUNCH gate");
+        return 1;
+    }
     g->gate = skynet_queryname(ctx, gate);
     if (g->gate == 0) {
         skynet_error(ctx, "Invalid gate %s", gate);

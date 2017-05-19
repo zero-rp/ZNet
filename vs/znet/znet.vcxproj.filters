@@ -243,9 +243,6 @@
     <ClCompile Include="..\..\src\lualib\lua-stm.c">
       <Filter>src\lualib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\server\service_gate.c">
-      <Filter>src\server</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\libuv\src\win\tty.c">
       <Filter>libuv\src\win</Filter>
     </ClCompile>
@@ -373,15 +370,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\socket_server.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\server\databuffer.h">
-      <Filter>src\server</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\server\hashid.h">
-      <Filter>src\server</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\server\service_gate.h">
-      <Filter>src\server</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\server\service_snjs.h">
       <Filter>src\server</Filter>

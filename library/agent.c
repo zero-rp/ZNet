@@ -51,7 +51,7 @@ _cb(struct skynet_context * ctx, void * ud, int type, int session, uint32_t sour
     return 0;
 }
 
-__declspec(dllexport) struct agent *agent_create(void){
+SKYNET_MODULE struct agent *agent_create(void){
     struct agent * g = skynet_malloc(sizeof(*g));
     memset(g, 0, sizeof(*g));
     g->watchdog = -1;
@@ -59,17 +59,18 @@ __declspec(dllexport) struct agent *agent_create(void){
     g->gate = -1;
     return g;
 }
-__declspec(dllexport) void agent_release(struct agent *g){
+SKYNET_MODULE void agent_release(struct agent *g){
 
     skynet_free(g);
 }
-__declspec(dllexport) int agent_init(struct agent *g, struct skynet_context * ctx, char * parm){
+SKYNET_MODULE int agent_init(struct agent *g, struct skynet_context * ctx, char * parm){
     if (parm == NULL)
         return 1;
     int sz = strlen(parm) + 1;
     char *watchdog = alloca(sz);
     char *gate = alloca(sz);
     int fd;
+    //得到初始化参数,gate服务,socket句柄,watchdog服务
     int n = sscanf(parm, "%s %d %s", gate, &fd, watchdog);
 
     g->watchdog = skynet_queryname(ctx, watchdog);
@@ -89,21 +90,21 @@ __declspec(dllexport) int agent_init(struct agent *g, struct skynet_context * ct
         skynet_error(ctx, "Invalid fd %s", fd);
         return 1;
     }
-
+    
+    //设置回调
     skynet_callback(ctx, g, _cb);
 
     g->ctx = ctx;
 
+    //注册服务
     const char * self = skynet_command(ctx, "REG", NULL);
     uint32_t handle_id = strtoul(self + 1, NULL, 16);
-
+    //
     char tmp[1024];
     n = snprintf(tmp, sizeof(tmp), "forward  %d %s :0", fd, self);
-
     skynet_send(ctx, 0, g->gate, PTYPE_TEXT, 0, tmp, n);
-    
+    //
     n = snprintf(tmp, sizeof(tmp), "start  %d", fd);
-
     skynet_send(ctx, 0, g->gate, PTYPE_TEXT, 0, tmp, n);
     return 0;
 }

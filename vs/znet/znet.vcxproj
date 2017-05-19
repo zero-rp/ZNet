@@ -97,13 +97,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;BUILDING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\duktape\;..\..\lua\src;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;jemalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;jemalloc.lib;duktape.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\tool;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -115,13 +115,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;WIN64;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;BUILDING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\duktape\;..\..\lua\src;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;jemalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;jemalloc.lib;duktape.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\tool;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -135,7 +135,7 @@
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;BUILDING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\duktape\;..\..\lua\src;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
       <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
@@ -150,7 +150,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\tool;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;jemalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;jemalloc.lib;duktape.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -158,25 +158,25 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>Disabled</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WIN64;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;BUILDING;NOUSE_JEMALLOC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\..\libuv\include;..\..\libuv\src;..\..\include;..\..\lua\src;..\..\duktape\;..\..\src;..\..\jemalloc\include\jemalloc;..\..\jemalloc\include\msvc_compat</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4146</DisableSpecificWarnings>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\tool;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>ws2_32.lib;IPHLPAPI.lib;Psapi.lib;Userenv.lib;lua.lib;duktape.lib;jemalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -238,7 +238,6 @@
     <ClCompile Include="..\..\src\lualib\sproto\lsproto.c" />
     <ClCompile Include="..\..\src\lualib\sproto\sproto.c" />
     <ClCompile Include="..\..\src\malloc_hook.c" />
-    <ClCompile Include="..\..\src\server\service_gate.c" />
     <ClCompile Include="..\..\src\server\service_harbor.c" />
     <ClCompile Include="..\..\src\server\service_logger.c" />
     <ClCompile Include="..\..\src\server\service_snjs.c" />
@@ -281,9 +280,6 @@
     <ClInclude Include="..\..\src\lualib\sproto\sproto.h" />
     <ClInclude Include="..\..\src\luashrtbl.h" />
     <ClInclude Include="..\..\src\malloc_hook.h" />
-    <ClInclude Include="..\..\src\server\databuffer.h" />
-    <ClInclude Include="..\..\src\server\hashid.h" />
-    <ClInclude Include="..\..\src\server\service_gate.h" />
     <ClInclude Include="..\..\src\server\service_harbor.h" />
     <ClInclude Include="..\..\src\server\service_logger.h" />
     <ClInclude Include="..\..\src\server\service_snjs.h" />
