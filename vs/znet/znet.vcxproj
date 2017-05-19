@@ -220,9 +220,7 @@
     <ClCompile Include="..\..\src\lualib\lpeg\lpvm.c" />
     <ClCompile Include="..\..\src\lualib\lsha1.c" />
     <ClCompile Include="..\..\src\lualib\lua-bson.c" />
-    <ClCompile Include="..\..\src\lualib\lua-clientsocket.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\..\src\lualib\lua-clientsocket.c" />
     <ClCompile Include="..\..\src\lualib\lua-cluster.c" />
     <ClCompile Include="..\..\src\lualib\lua-crypt.c" />
     <ClCompile Include="..\..\src\lualib\lua-debugchannel.c" />

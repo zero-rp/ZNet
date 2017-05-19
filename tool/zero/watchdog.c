@@ -47,11 +47,11 @@ _ctrl(struct watchdog * g, const void * msg, int sz) {
     }
     int id = strtol(idstr, NULL, 10);
 
-    if (memcmp(text, "disconnect", i) == 0) {
+    if (memcmp(text, "disconnect", 10) == 0) {
         skynet_command(ctx, "EXIT", NULL);
         return;
     }
-    if (memcmp(text, "open", i) == 0) {
+    if (memcmp(text, "open", 4) == 0) {
         char tmp[1024];
         int n = snprintf(tmp, sizeof(tmp), "agent :%x %d :%x", g->gate, id, g->self);
 
@@ -62,7 +62,7 @@ _ctrl(struct watchdog * g, const void * msg, int sz) {
         rb_insert(id, gate, g->agent);
         return;
     }
-    if (memcmp(text, "close", i) == 0) {
+    if (memcmp(text, "close", 5) == 0) {
         rb_node * agent = rb_search(id, g->agent);
         if (agent) {
             //¹Ø±Õagent·şÎñ
