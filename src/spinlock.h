@@ -109,7 +109,7 @@ spinlock_unlock(spinlock *lock) {
 }
 
 static inline void
-spinlock_destroy(struct spinlock *lock) {
+spinlock_destroy(spinlock *lock) {
     (void)lock;
 }
 

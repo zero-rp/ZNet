@@ -1,13 +1,15 @@
 ﻿#include "skynet.h"
 #include "skynet_socket.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 struct agent {
     struct skynet_context * ctx;
     int watchdog;
     int fd;
     int gate;
 };
-
 
 static void
 _ctrl(struct agent * g, const void * msg, int sz) {
@@ -45,9 +47,6 @@ _cb(struct skynet_context * ctx, void * ud, int type, int session, uint32_t sour
         skynet_socket_send(ctx, g->fd, tmp, sz + 2);
         skynet_error(ctx, "[agent] recv len : %d", sz);
     }
-    case PTYPE_SOCKET:
-        // recv socket message from skynet_socket
-        break;
     }
     return 0;
 }

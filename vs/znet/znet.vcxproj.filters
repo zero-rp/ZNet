@@ -25,6 +25,9 @@
     <Filter Include="src\lualib\sproto">
       <UniqueIdentifier>{30eac602-203b-43cd-adb1-237acc8f5778}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\duklib">
+      <UniqueIdentifier>{4d010717-7e05-4a1e-aac0-e61e65750ae1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\libuv\src\fs-poll.c">

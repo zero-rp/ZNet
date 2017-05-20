@@ -21,9 +21,20 @@ struct snjs {
 static int
 init_cb(struct snjs *l, struct skynet_context *context, const char * args, size_t sz) {
     duk_context *ctx = l->ctx;
-
+    l->context = context;
 	duk_gc(ctx, 0);
-	
+
+    //duk_push_pointer(ctx, context);
+    //duk_put_prop_string(ctx, -1, "skynet_context");
+
+    ////设置查找路径
+
+    ////加载loader脚本
+
+    ////调用loader
+    //duk_push_lstring(ctx, args, sz);
+
+    //加载完毕,回收内存
     duk_gc(ctx, 0);
 	return 0;
 }
