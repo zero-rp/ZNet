@@ -18,6 +18,10 @@
 
 #if defined(WIN32) || defined(WIN64)
 #define close closesocket
+#else
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/tcp.h>
 #endif
 
 #define MAX_INFO 128
