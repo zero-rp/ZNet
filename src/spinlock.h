@@ -1,6 +1,8 @@
 #ifndef _ZNET_SPINLOCK_H
 #define _ZNET_SPINLOCK_H
+
 #if !(defined(_WIN32) || defined(_WIN64))
+
 #define SPIN_INIT(q) spinlock_init(&(q)->lock);
 #define SPIN_LOCK(q) spinlock_lock(&(q)->lock);
 #define SPIN_UNLOCK(q) spinlock_unlock(&(q)->lock);
@@ -77,7 +79,6 @@ spinlock_destroy(struct spinlock *lock) {
 #else
 
 #include <windows.h>
-
 #define SPIN_INIT(q) spinlock_init(&(q)->lock);
 #define SPIN_LOCK(q) spinlock_lock(&(q)->lock);
 #define SPIN_UNLOCK(q) spinlock_unlock(&(q)->lock);

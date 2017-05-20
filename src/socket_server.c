@@ -218,11 +218,11 @@ struct send_object {
 #define MALLOC skynet_malloc
 #define FREE skynet_free
 
-int ctrl_cmd(struct socket_server *ss, int type, int len, char *buffer, struct socket_message *result);
-void force_close(struct socket_server *ss, struct socket *s, struct socket_message *result);
-int send_list_tcp(struct socket_server *ss, struct socket *s, struct wb_list *list, struct socket_message *result);
-int send_list_udp(struct socket_server *ss, struct socket *s, struct wb_list *list, struct socket_message *result);
-int report_accept(struct socket_server *ss, struct socket *s, struct socket_message *result);
+static int ctrl_cmd(struct socket_server *ss, int type, int len, char *buffer, struct socket_message *result);
+static void force_close(struct socket_server *ss, struct socket *s, struct socket_message *result);
+static int send_list_tcp(struct socket_server *ss, struct socket *s, struct wb_list *list, struct socket_message *result);
+static int send_list_udp(struct socket_server *ss, struct socket *s, struct wb_list *list, struct socket_message *result);
+static int report_accept(struct socket_server *ss, struct socket *s, struct socket_message *result);
 
 static inline struct socket *
 socket_from_handle(uv_handle_t *h) {
