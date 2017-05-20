@@ -1,4 +1,5 @@
-#include "skynet.h"
+ï»¿#include "skynet.h"
+#include "skynet_socket.h"
 #include <stdio.h>
 struct agent {
     struct skynet_context * ctx;
@@ -27,22 +28,22 @@ _ctrl(struct agent * g, const void * msg, int sz) {
         skynet_command(ctx, "EXIT", NULL);
         return;
     }
-    skynet_error(ctx, "[gate] Unkown command : %s", command);
+    skynet_error(ctx, "[agent] Unkown command : %s", command);
 }
 
 static int
 _cb(struct skynet_context * ctx, void * ud, int type, int session, uint32_t source, const void * msg, size_t sz) {
-    struct gate *g = ud;
+    struct agent *g = ud;
     switch (type) {
     case PTYPE_TEXT:
         _ctrl(g, msg, (int)sz);
         break;
     case PTYPE_CLIENT: {
-        if (sz <= 4) {
-            //skynet_error(ctx, "Invalid client message from %x", source);
-            break;
-        }
-        
+        //æ”¶åˆ°å®¢æˆ·æ•°æ®
+        char *tmp = skynet_malloc(sz + 2);
+        memcpy(tmp + 2, msg, sz);
+        skynet_socket_send(ctx, g->fd, tmp, sz + 2);
+        skynet_error(ctx, "[agent] recv len : %d", sz);
     }
     case PTYPE_SOCKET:
         // recv socket message from skynet_socket
@@ -70,7 +71,7 @@ SKYNET_MODULE int agent_init(struct agent *g, struct skynet_context * ctx, char 
     char *watchdog = alloca(sz);
     char *gate = alloca(sz);
     int fd;
-    //µÃµ½³õÊ¼»¯²ÎÊı,gate·şÎñ,socket¾ä±ú,watchdog·şÎñ
+    //å¾—åˆ°åˆå§‹åŒ–å‚æ•°,gateæœåŠ¡,socketå¥æŸ„,watchdogæœåŠ¡
     int n = sscanf(parm, "%s %d %s", gate, &fd, watchdog);
 
     g->watchdog = skynet_queryname(ctx, watchdog);
@@ -91,12 +92,12 @@ SKYNET_MODULE int agent_init(struct agent *g, struct skynet_context * ctx, char 
         return 1;
     }
     
-    //ÉèÖÃ»Øµ÷
+    //è®¾ç½®å›è°ƒ
     skynet_callback(ctx, g, _cb);
 
     g->ctx = ctx;
 
-    //×¢²á·şÎñ
+    //æ³¨å†ŒæœåŠ¡
     const char * self = skynet_command(ctx, "REG", NULL);
     uint32_t handle_id = strtoul(self + 1, NULL, 16);
     //

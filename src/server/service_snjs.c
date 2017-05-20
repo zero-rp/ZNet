@@ -1,4 +1,4 @@
-#include "skynet.h"
+﻿#include "skynet.h"
 
 #include "duktape.h"
 
@@ -31,7 +31,7 @@ init_cb(struct snjs *l, struct skynet_context *context, const char * args, size_
 static int
 launch_cb(struct skynet_context * context, void *ud, int type, int session, uint32_t source , const void * msg, size_t sz) {
 	assert(type == 0 && session == 0);
-	struct snlua *l = ud;
+	struct snjs *l = ud;
 	skynet_callback(context, NULL, NULL);
 	int err = init_cb(l, context, msg, sz);
 	if (err) {
