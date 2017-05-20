@@ -949,7 +949,7 @@ start_socket(struct socket_server *ss, struct request_start *request, struct soc
 		int backlog = (int)s->s.tcp.data;
 		if (uv_listen((uv_stream_t *)&s->s, backlog, connection_cb) != 0) {
 			force_close(ss, s, result);
-			return SOCKET_ERROR;
+			return SOCKET_ERR;
 		}
 		s->s.tcp.data = ss;
 		s->type = SOCKET_TYPE_LISTEN;
@@ -1003,7 +1003,7 @@ set_udp_address(struct socket_server *ss, struct request_setudp *request, struct
 		result->ud = 0;
 		result->data = NULL;
 
-		return SOCKET_ERROR;
+		return SOCKET_ERR;
 	}
 	if (type == PROTOCOL_UDP) {
 		memcpy(s->p.udp_address, request->address, 1+2+4);	// 1 type, 2 port, 4 ipv4
