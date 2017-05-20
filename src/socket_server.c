@@ -16,7 +16,7 @@
 #include <string.h>
 
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 #define close closesocket
 #else
 #include <sys/types.h>
@@ -968,7 +968,7 @@ setopt_socket(struct socket_server *ss, struct request_setopt *request) {
 		return;
 	}
 	int v = request->value;
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 	setsockopt(s->s.tcp.socket, IPPROTO_TCP, request->what, (char *)&v, sizeof(v));
 #else
     setsockopt(s->s.tcp.io_watcher.fd, IPPROTO_TCP, request->what, (char *)&v, sizeof(v));

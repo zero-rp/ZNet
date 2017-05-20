@@ -107,7 +107,7 @@ thread_monitor(void *p) {
 		}
 		for (i=0;i<5;i++) {
 			CHECK_ABORT
-#if !(defined(_WIN32) || defined(_WIN64))
+#if (defined(_WIN32) || defined(_WIN64))
 			Sleep(1000);
 #else
             sleep(1);
@@ -139,7 +139,7 @@ thread_timer(void *p) {
 		skynet_updatetime();
 		CHECK_ABORT
 		wakeup(m,m->count-1);
-#if !(defined(_WIN32) || defined(_WIN64))
+#if (defined(_WIN32) || defined(_WIN64))
         Sleep(25);
 #else
         usleep(2500);
