@@ -24,6 +24,9 @@
 #include "server/service_snjs.h"
 #include "server/service_harbor.h"
 
+#if !(defined(WIN32) || defined(WIN64))
+#define Sleep sleep
+#endif
 struct monitor {
 	int count;
 	struct skynet_monitor ** m;

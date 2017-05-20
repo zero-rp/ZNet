@@ -971,7 +971,7 @@ setopt_socket(struct socket_server *ss, struct request_setopt *request) {
 #if defined(WIN32) || defined(WIN64)
 	setsockopt(s->s.tcp.socket, IPPROTO_TCP, request->what, (char *)&v, sizeof(v));
 #else
-    setsockopt(uv__stream_fd(&s->s.tcp), IPPROTO_TCP, request->what, (char *)&v, sizeof(v));
+    setsockopt(s->s.tcp.io_watcher.fd, IPPROTO_TCP, request->what, (char *)&v, sizeof(v));
 #endif
 }
 

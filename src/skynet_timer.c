@@ -6,9 +6,9 @@
 #include "skynet_handle.h"
 #include "spinlock.h"
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(WIN32) || defined(WIN64)
 #include <sys/timeb.h>
-#elif defined(__APPLE__)
+#else
 #include <time.h>
 #endif
 #include <assert.h>

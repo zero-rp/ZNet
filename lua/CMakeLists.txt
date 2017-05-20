@@ -1,4 +1,5 @@
 project(lua)
+include_directories(${CMAKE_SOURCE_DIR}/libuv/include)
 aux_source_directory(./src src)
 add_library(lua STATIC ${src})
 set_target_properties(lua PROPERTIES output_name "lua")
