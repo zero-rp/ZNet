@@ -24,9 +24,7 @@
 #include "server/service_snjs.h"
 #include "server/service_harbor.h"
 
-#if !(defined(WIN32) || defined(WIN64))
-#define Sleep sleep
-#endif
+
 struct monitor {
 	int count;
 	struct skynet_monitor ** m;
@@ -109,7 +107,11 @@ thread_monitor(void *p) {
 		}
 		for (i=0;i<5;i++) {
 			CHECK_ABORT
+#if !(defined(_WIN32) || defined(_WIN64))
 			Sleep(1000);
+#else
+            sleep(1);
+#endif
 		}
 	}
 }
@@ -137,7 +139,11 @@ thread_timer(void *p) {
 		skynet_updatetime();
 		CHECK_ABORT
 		wakeup(m,m->count-1);
-		Sleep(25);
+#if !(defined(_WIN32) || defined(_WIN64))
+        Sleep(25);
+#else
+        usleep(2500);
+#endif
 		if (SIG) {
 			signal_hup();
 			SIG = 0;

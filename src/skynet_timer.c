@@ -6,7 +6,7 @@
 #include "skynet_handle.h"
 #include "spinlock.h"
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 #include <sys/timeb.h>
 #else
 #include <time.h>
@@ -334,7 +334,7 @@ skynet_thread_time(void) {
 }
 
     return (uint64_t)(aTaskInfo.user_time.seconds) + (uint64_t)aTaskInfo.user_time.microseconds;
-#elif defined(WIN32) || defined(WIN64)
+#elif defined(_WIN32) || defined(_WIN64)
     //return uv_hrtime();
     LARGE_INTEGER counter;
 
@@ -344,12 +344,12 @@ skynet_thread_time(void) {
     return counter.QuadPart;
 #else
     struct timespec ti;
-    //clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ti);
+    clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ti);
 
-    //return (uint64_t)ti.tv_sec * MICROSEC + (uint64_t)ti.tv_nsec / (NANOSEC / MICROSEC);
+    return (uint64_t)ti.tv_sec * MICROSEC + (uint64_t)ti.tv_nsec / (NANOSEC / MICROSEC);
 #endif
 }
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 void usleep(uint32_t us)
 {
     LARGE_INTEGER litmp;

@@ -4,7 +4,7 @@
 #include <lauxlib.h>
 
 #include <time.h>
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 #include <process.h>
 #include <WinSock2.h>
 typedef int pid_t;

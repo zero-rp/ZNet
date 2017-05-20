@@ -12,7 +12,7 @@ skynet_log_open(struct skynet_context * ctx, uint32_t handle) {
 	if (logpath == NULL)
 		return NULL;
 	size_t sz = strlen(logpath);
-	#if defined(WIN32) || defined(WIN64)
+	#if defined(_WIN32) || defined(_WIN64)
     char *tmp = alloca(sz + 16);
     #else
     char tmp [sz + 16];
