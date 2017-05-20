@@ -369,13 +369,13 @@ read_cb(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf) {
 		result.id = s->id;
 		result.ud = nread;
 		result.data = buf->base;
-		ss->cb((stream->type != UV_UDP ? SN_SOCKET_DATA : SN_SOCKET_UDP), &result);
+		ss->cb((stream->type != UV_UDP ? SOCKET_DATA : SOCKET_UDP), &result);
 	}
 	else {
 		FREE(buf->base);
 		if (nread < 0) {
 			force_close(ss, s, &result);
-			ss->cb(SN_SOCKET_ERROR, &result);
+			ss->cb(SOCKET_ERR, &result);
 		}
 	}
 }
@@ -388,7 +388,7 @@ connect_cb_(uv_connect_t* req, int status) {
 
 	if (status != 0 || uv_read_start((uv_stream_t *)&s->s, alloc_cb, read_cb) != 0) {
 		force_close(ss, s, &result);
-		ss->cb(SN_SOCKET_ERROR, &result);
+		ss->cb(SOCKET_ERR, &result);
 	}
 	else {
 		uv_tcp_keepalive(&s->s.tcp, true, false);
@@ -406,7 +406,7 @@ connect_cb_(uv_connect_t* req, int status) {
 				result.data = ss->buffer;
 			}
 		}
-		ss->cb(SN_SOCKET_OPEN, &result);
+		ss->cb(SOCKET_OPEN, &result);
 	}
 	FREE(req);
 }
@@ -428,7 +428,7 @@ write_cb_(uv_write_t* req, int status) {
 			return;
 		}
 	}
-	ss->cb(SN_SOCKET_CLOSE, &result);
+	ss->cb(SOCKET_CLOSE, &result);
 }
 
 static inline void 
@@ -456,12 +456,12 @@ connection_cb(uv_stream_t* server, int status) {
 	struct socket_message result;
 	if (status == 0) {
 		if (report_accept(ss, s, &result)) {
-			ss->cb(SN_SOCKET_ACCEPT, &result);
+			ss->cb(SOCKET_ACCEPT, &result);
 		}
 	}
 	else {
 		force_close(ss, s, &result);
-		ss->cb(SN_SOCKET_ERROR, &result);
+		ss->cb(SOCKET_ERR, &result);
 	}
 }
 
@@ -630,7 +630,7 @@ open_socket(struct socket_server *ss, struct request_open * request, struct sock
 	return -1;
 _failed:
 	ss->slot[HASH_ID(id)].type = SOCKET_TYPE_INVALID;
-	return SN_SOCKET_ERROR;
+	return SOCKET_ERR;
 }
 
 #define MAX_SEND_BUF 1 // 这里暂时只设置为1，因为write_cb_里不知道该怎么得到这一次发送的总buf数
@@ -649,7 +649,7 @@ send_list_tcp(struct socket_server *ss, struct socket *s, struct wb_list *list, 
 		req->data = list;
 		if (uv_write(req, (uv_stream_t *)&s->s.tcp, buf, i, &write_cb_) != 0) {
 			FREE(req);
-			return SN_SOCKET_CLOSE;
+			return SOCKET_CLOSE;
 		}
 		s->write = true;
 	}
@@ -691,7 +691,7 @@ send_list_udp(struct socket_server *ss, struct socket *s, struct wb_list *list, 
 		socklen_t sasz = udp_socket_address(s, tmp->udp_address, &sa);
 		if (uv_udp_send(req, &s->s.udp, &buf, 1, &sa.s, &udp_send_cb) != 0) {
 			FREE(req);
-			return SN_SOCKET_CLOSE;
+			return SOCKET_CLOSE;
 		}
 	}
 	return -1;
@@ -742,13 +742,13 @@ raise_uncomplete(struct socket * s) {
  */
 static int
 send_buffer(struct socket_server *ss, struct socket *s, struct socket_message *result) {
-	if (send_list(ss,s,&s->high,result) == SN_SOCKET_CLOSE) {
-		return SN_SOCKET_CLOSE;
+	if (send_list(ss,s,&s->high,result) == SOCKET_CLOSE) {
+		return SOCKET_CLOSE;
 	}
 	if (s->high.head == NULL) {
 		if (s->low.head != NULL) {
-			if (send_list(ss,s,&s->low,result) == SN_SOCKET_CLOSE) {
-				return SN_SOCKET_CLOSE;
+			if (send_list(ss,s,&s->low,result) == SOCKET_CLOSE) {
+				return SOCKET_CLOSE;
 			}
 		}
 	}
@@ -789,8 +789,8 @@ append_sendbuffer(struct socket_server *ss, struct socket *s, struct request_sen
 	s->wb_size += buf->sz;
 
 	struct socket_message msg;
-	if (!s->write && send_buffer(ss, s, &msg) == SN_SOCKET_CLOSE) {
-		ss->cb(SN_SOCKET_CLOSE, &msg);
+	if (!s->write && send_buffer(ss, s, &msg) == SOCKET_CLOSE) {
+		ss->cb(SOCKET_CLOSE, &msg);
 	}
 }
 
@@ -861,7 +861,7 @@ listen_socket(struct socket_server *ss, struct request_listen * request, struct 
 
 	if (uv_tcp_bind(&s->s.tcp, &request->addr, 0) != 0) {
 		uv_close((uv_handle_t *)&s->s.tcp, close_cb);
-		return SOCKET_ERROR;
+		return -1;
 	}
 	s->s.tcp.data = (void *)request->backlog; // 把backlog存在data里面
 	s->type = SOCKET_TYPE_PLISTEN;
@@ -873,7 +873,7 @@ _failed:
 	result->data = NULL;
 	ss->slot[HASH_ID(id)].type = SOCKET_TYPE_INVALID;
 
-	return SOCKET_ERROR;
+	return -1;
 }
 
 static int
@@ -885,7 +885,7 @@ close_socket(struct socket_server *ss, struct request_close *request, struct soc
 		result->opaque = request->opaque;
 		result->ud = 0;
 		result->data = NULL;
-		return SN_SOCKET_CLOSE;
+		return SOCKET_CLOSE;
 	}
 	if (!send_buffer_empty(s)) { 
 		int type = send_buffer(ss,s,result);
@@ -896,7 +896,7 @@ close_socket(struct socket_server *ss, struct request_close *request, struct soc
 		force_close(ss,s,result);
 		result->id = id;
 		result->opaque = request->opaque;
-		return SN_SOCKET_CLOSE;
+		return SOCKET_CLOSE;
 	}
 	s->type = SOCKET_TYPE_HALFCLOSE;
 
@@ -912,11 +912,11 @@ bind_socket(struct socket_server *ss, struct request_bind *request, struct socke
 	struct socket *s = new_fd(ss, id, request->fd, PROTOCOL_TCP, request->opaque, true);
 	if (s == NULL) {
 		result->data = NULL;
-		return SN_SOCKET_ERROR;
+		return SOCKET_ERR;
 	}
 	s->type = SOCKET_TYPE_BIND;
 	result->data = "binding";
-	return SN_SOCKET_OPEN;
+	return SOCKET_OPEN;
 }
 
 static int
@@ -928,34 +928,34 @@ start_socket(struct socket_server *ss, struct request_start *request, struct soc
 	result->data = NULL;
 	struct socket *s = &ss->slot[HASH_ID(id)];
 	if (s->type == SOCKET_TYPE_INVALID || s->id !=id) {
-		return SN_SOCKET_ERROR;
+		return SOCKET_ERR;
 	}
 	if (s->type == SOCKET_TYPE_PACCEPT) {
 		if (uv_read_start((uv_stream_t *)&s->s, alloc_cb, read_cb) != 0) {
 			force_close(ss, s, result);
-			return SN_SOCKET_ERROR;
+			return SOCKET_ERR;
 		}
 		s->s.tcp.data = ss;
 		s->type = SOCKET_TYPE_CONNECTED;
 		s->opaque = request->opaque;
 		result->data = "start";
-		return SN_SOCKET_OPEN;
+		return SOCKET_OPEN;
 	} else if (s->type == SOCKET_TYPE_CONNECTED) {
 		s->opaque = request->opaque;
 		result->data = "transfer";
-		return SN_SOCKET_OPEN;
+		return SOCKET_OPEN;
 	}
 	else if (s->type == SOCKET_TYPE_PLISTEN) {
 		int backlog = (int)s->s.tcp.data;
 		if (uv_listen((uv_stream_t *)&s->s, backlog, connection_cb) != 0) {
 			force_close(ss, s, result);
-			return SN_SOCKET_ERROR;
+			return SOCKET_ERROR;
 		}
 		s->s.tcp.data = ss;
 		s->type = SOCKET_TYPE_LISTEN;
 		s->opaque = request->opaque;
 		result->data = "start";
-		return SN_SOCKET_OPEN;
+		return SOCKET_OPEN;
 	}
 	return -1;
 }
@@ -1003,7 +1003,7 @@ set_udp_address(struct socket_server *ss, struct request_setudp *request, struct
 		result->ud = 0;
 		result->data = NULL;
 
-		return SN_SOCKET_ERROR;
+		return SOCKET_ERROR;
 	}
 	if (type == PROTOCOL_UDP) {
 		memcpy(s->p.udp_address, request->address, 1+2+4);	// 1 type, 2 port, 4 ipv4
@@ -1032,7 +1032,7 @@ ctrl_cmd(struct socket_server *ss, int type, int len, char *buffer, struct socke
 		result->id = 0;
 		result->ud = 0;
 		result->data = NULL;
-		return SN_SOCKET_EXIT;
+		return SOCKET_EXIT;
 	case 'D':
 		return send_socket(ss, (struct request_send *)buffer, result, PRIORITY_HIGH, NULL);
 	case 'P':

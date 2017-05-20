@@ -3,13 +3,13 @@
 
 #include <stdint.h>
 
-#define SN_SOCKET_DATA 0
-#define SN_SOCKET_CLOSE 1
-#define SN_SOCKET_OPEN 2
-#define SN_SOCKET_ACCEPT 3
-#define SN_SOCKET_ERROR 4
-#define SN_SOCKET_EXIT 5
-#define SN_SOCKET_UDP 6
+#define SOCKET_DATA 0
+#define SOCKET_CLOSE 1
+#define SOCKET_OPEN 2
+#define SOCKET_ACCEPT 3
+#define SOCKET_ERR 4
+#define SOCKET_EXIT 5
+#define SOCKET_UDP 6
 
 struct socket_server;
 

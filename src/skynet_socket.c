@@ -17,24 +17,24 @@ void forward_message(int type, bool padding, struct socket_message * result);
 void socket_server_cb(int type, struct socket_message *result)
 {
 	switch (type) {
-	case SN_SOCKET_EXIT:
+	case SOCKET_EXIT:
 		return;
-	case SN_SOCKET_DATA:
+	case SOCKET_DATA:
 		forward_message(SKYNET_SOCKET_TYPE_DATA, false, result);
 		break;
-	case SN_SOCKET_CLOSE:
+	case SOCKET_CLOSE:
 		forward_message(SKYNET_SOCKET_TYPE_CLOSE, false, result);
 		break;
-	case SN_SOCKET_OPEN:
+	case SOCKET_OPEN:
 		forward_message(SKYNET_SOCKET_TYPE_CONNECT, true, result);
 		break;
-	case SN_SOCKET_ERROR:
+	case SOCKET_ERR:
 		forward_message(SKYNET_SOCKET_TYPE_ERROR, false, result);
 		break;
-	case SN_SOCKET_ACCEPT:
+	case SOCKET_ACCEPT:
 		forward_message(SKYNET_SOCKET_TYPE_ACCEPT, true, result);
 		break;
-	case SN_SOCKET_UDP:
+	case SOCKET_UDP:
 		forward_message(SKYNET_SOCKET_TYPE_UDP, false, result);
 		break;
 	default:
