@@ -1,6 +1,6 @@
 #ifndef _ZNET_SPINLOCK_H
 #define _ZNET_SPINLOCK_H
-#ifndef _MSC_VER
+#if !(defined(_WIN32) || defined(_WIN64))
 #define SPIN_INIT(q) spinlock_init(&(q)->lock);
 #define SPIN_LOCK(q) spinlock_lock(&(q)->lock);
 #define SPIN_UNLOCK(q) spinlock_unlock(&(q)->lock);
@@ -8,32 +8,32 @@
 
 #ifndef USE_PTHREAD_LOCK
 
-struct spinlock {
+typedef struct _spinlock {
 	int lock;
-};
+}spinlock;
 
 static inline void
-spinlock_init(struct spinlock *lock) {
+spinlock_init(spinlock *lock) {
 	lock->lock = 0;
 }
 
 static inline void
-spinlock_lock(struct spinlock *lock) {
+spinlock_lock(spinlock *lock) {
 	while (__sync_lock_test_and_set(&lock->lock,1)) {}
 }
 
 static inline int
-spinlock_trylock(struct spinlock *lock) {
+spinlock_trylock(spinlock *lock) {
 	return __sync_lock_test_and_set(&lock->lock,1) == 0;
 }
 
 static inline void
-spinlock_unlock(struct spinlock *lock) {
+spinlock_unlock(spinlock *lock) {
 	__sync_lock_release(&lock->lock);
 }
 
 static inline void
-spinlock_destroy(struct spinlock *lock) {
+spinlock_destroy(spinlock *lock) {
 	(void) lock;
 }
 
