@@ -53,8 +53,10 @@ SKYNET_EXTERN int skynet_sendname(struct skynet_context * context, uint32_t sour
 
 SKYNET_EXTERN int skynet_isremote(struct skynet_context *, uint32_t handle, int * harbor);
 
-SKYNET_EXTERN typedef int (*skynet_cb)(struct skynet_context * context, void *ud, int type, int session, uint32_t source , const void * msg, size_t sz);
+typedef int (*skynet_cb)(struct skynet_context * context, void *ud, int type, int session, uint32_t source , const void * msg, size_t sz);
 SKYNET_EXTERN void skynet_callback(struct skynet_context * context, void *ud, skynet_cb cb);
+
+SKYNET_EXTERN int skynet_context_newsession(struct skynet_context *);
 
 SKYNET_EXTERN uint32_t skynet_current_handle(void);
 SKYNET_EXTERN uint64_t skynet_now(void);
@@ -63,7 +65,7 @@ SKYNET_EXTERN void skynet_debug_memory(const char *info);	// for debug use, outp
 SKYNET_EXTERN void usleep(uint32_t us);
 SKYNET_EXTERN char *strsep(char **s, const char *ct);
 #endif
-
+SKYNET_EXTERN int skynet_timeout(uint32_t handle, int time, int session);
 
 #include <stddef.h>
 #include <malloc.h>

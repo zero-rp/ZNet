@@ -11,6 +11,10 @@
 #include <stdarg.h>
 #include <malloc.h>
 
+#if !(defined(_WIN32) || defined(_WIN64))
+#define SKYNET_MODULE
+#endif
+
 #define BACKLOG 32
 
 struct connection {
@@ -176,9 +180,10 @@ _forward(struct gate *g, struct connection * c, int size) {
 		return;
 	}
 	if (c->agent) {
-		void * temp = skynet_malloc(size);
-		databuffer_read(&c->buffer,&g->mp,temp, size);
-		skynet_send(ctx, c->client, c->agent, g->client_tag | PTYPE_TAG_DONTCOPY, 1 , temp, size);
+        char * temp = skynet_malloc(size + sizeof(int));
+        (*(int *)temp) = c->id;
+        databuffer_read(&c->buffer, &g->mp, temp + sizeof(int), size);
+        skynet_send(ctx, c->client, c->agent, g->client_tag | PTYPE_TAG_DONTCOPY, 1, temp, size + sizeof(int));
 	} else if (g->watchdog) {
 		char * tmp = skynet_malloc(size + 32);
 		int n = snprintf(tmp,32,"%d data ",c->id);

@@ -547,7 +547,29 @@ check_wb_list(struct wb_list *s) {
 	assert(s->head == NULL);
 	assert(s->tail == NULL);
 }
+static inline void
+udp_read_cb(uv_stream_t* stream, ssize_t nread, uv_buf_t *buf, struct sockaddr *addr, unsigned flags) {
+    struct socket_server *ss = (struct socket_server *)stream->data;
+    struct socket *s = socket_from_handle((uv_handle_t *)stream);
+    struct socket_message result;
 
+    if (nread > 0) {
+        result.opaque = s->opaque;
+        result.id = s->id;
+        result.ud = nread;
+        result.data = buf->base;
+        //gen_udp_address(PROTOCOL_UDP, addr, );
+        ss->cb((stream->type != UV_UDP ? SOCKET_DATA : SOCKET_UDP), &result);
+    }
+    else {
+        FREE(buf->base);
+        if (nread < 0) {
+            force_close(ss, s, &result);
+            ss->cb(SOCKET_ERR, &result);
+        }
+    }
+
+}
 static struct socket *
 new_fd(struct socket_server *ss, int id, int fd, int protocol, uintptr_t opaque, bool add) {
 	struct socket * s = &ss->slot[HASH_ID(id)];
@@ -576,19 +598,19 @@ new_fd(struct socket_server *ss, int id, int fd, int protocol, uintptr_t opaque,
 			}
 		}
 	}
-	else if (protocol == PROTOCOL_UDP || protocol == PROTOCOL_UDPv6) {
-		uv_udp_init(ss->loop, &s->s.udp);
-		if (fd != -1) {
-			uv_udp_open(&s->s.udp, fd);
-		}
-		s->s.udp.data = ss;
-		if (add) {
-// 			if (uv_udp_recv_start(&s->s.udp, alloc_cb, ) != 0) {
-// 				s->type = SOCKET_TYPE_INVALID;
-// 				return NULL;
-// 			}
-		}
-	}
+    else if (protocol == PROTOCOL_UDP || protocol == PROTOCOL_UDPv6) {
+        uv_udp_init(ss->loop, &s->s.udp);
+        if (fd != -1) {
+            uv_udp_open(&s->s.udp, fd);
+        }
+        s->s.udp.data = ss;
+        if (add) {
+            if (uv_udp_recv_start(&s->s.udp, alloc_cb, udp_read_cb) != 0) {
+                s->type = SOCKET_TYPE_INVALID;
+                return NULL;
+            }
+        }
+    }
 	s->protocol = protocol;
 	s->p.size = MIN_READ_BUFFER;
 	s->write = false;
@@ -984,7 +1006,7 @@ add_udp_socket(struct socket_server *ss, struct request_udp *udp) {
 	} else {
 		protocol = PROTOCOL_UDP;
 	}
-	struct socket *ns = new_fd(ss, id, -1, protocol, udp->opaque, true);
+	struct socket *ns = new_fd(ss, id, udp->fd, protocol, udp->opaque, true);
 	if (ns == NULL) {
 		ss->slot[HASH_ID(id)].type = SOCKET_TYPE_INVALID;
 	}
@@ -1312,11 +1334,21 @@ socket_server_userobject(struct socket_server *ss, struct socket_object_interfac
 
 int 
 socket_server_udp(struct socket_server *ss, uintptr_t opaque, const char * addr, int port) {
-	int fd;
+    int fd = 0;
 	int family;
 	if (port != 0 || addr != NULL) {
 		// bind
-		fd = -1;// do_bind(addr, port, IPPROTO_UDP, &family);
+        family = AF_INET;
+        fd = socket(family, SOCK_DGRAM, 0);
+        struct sockaddr_in local_addr;
+        memset(&local_addr, 0, sizeof(struct sockaddr_in));
+        local_addr.sin_family = AF_INET;
+        local_addr.sin_port = (uint16_t)((((uint16_t)(port) & 0xff00) >> 8) | (((uint16_t)(port) & 0x00ff) << 8));
+        if (addr != NULL)
+            local_addr.sin_addr.S_un.S_addr = inet_addr(addr);
+        bind(fd, (struct sockaddr *)(&local_addr), sizeof(struct sockaddr_in));
+		
+        //fd = -1;// do_bind(addr, port, IPPROTO_UDP, &family);
 		if (fd < 0) {
 			return -1;
 		}

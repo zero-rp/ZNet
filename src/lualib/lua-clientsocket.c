@@ -144,20 +144,28 @@ lusleep(lua_State *L) {
 
 struct queue {
 	uv_mutex_t lock;
+	uv_thread_t pid;
+	int exit;
 	int head;
 	int tail;
 	char * queue[QUEUE_SIZE];
+};
+
+struct queue_ud {
+	struct queue* q;
 };
 
 static void 
 readline_stdin(void * arg) {
 	struct queue * q = arg;
 	char tmp[1024];
-	while (!feof(stdin)) {
+	while (!feof(stdin) && !q->exit) {
 		if (fgets(tmp,sizeof(tmp),stdin) == NULL) {
 			// read stdin failed
 			exit(1);
 		}
+		if (q->exit)
+			break;
 		int n = strlen(tmp) -1;
 
 		char * str = malloc(n+1);
@@ -176,7 +184,8 @@ readline_stdin(void * arg) {
 		}
 		uv_mutex_unlock(&q->lock);
 	}
-	return;
+	skynet_free(q);
+	return 0;
 }
 
 static int
@@ -196,6 +205,18 @@ lreadstdin(lua_State *L) {
 	free(str);
 	return 1;
 }
+
+static int l_stdud_gc(lua_State* L) {
+    /* 回收资源 */
+    struct queue_ud* privp = lua_touserdata(L, 1);
+	privp->q->exit = 1;
+    return 0;
+}
+
+static const struct luaL_Reg lua_stdud_m[] =
+{
+{ "__gc", l_stdud_gc },
+{ NULL, NULL } };
 
 LUAMOD_API int
 luaopen_clientsocket_(lua_State *L) {
@@ -217,14 +238,22 @@ luaopen_clientsocket_(lua_State *L) {
     WSAStartup(wVersionRequested, &wsaData);
 #endif
 
-	struct queue * q = lua_newuserdata(L, sizeof(*q));
-	memset(q, 0, sizeof(*q));
-	uv_mutex_init(&q->lock);
+	struct queue_ud* ud = lua_newuserdata(L, sizeof(*ud));
+	memset(ud, 0, sizeof(*ud));
+    ud->q = skynet_malloc(sizeof(*ud->q));
+    memset(ud->q, 0, sizeof(*ud->q));
+
+	luaL_newmetatable(L, "std_ud");
+    luaL_setfuncs(L, lua_stdud_m, 0);
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -2, "__index");
+    lua_setmetatable(L, -2);
+
+	uv_mutex_init(&ud->q->lock);
 	lua_pushcclosure(L, lreadstdin, 1);
 	lua_setfield(L, -2, "readstdin");
-
-	uv_thread_t pid ;
-	uv_thread_create(&pid, readline_stdin, q);
+    
+	uv_thread_create(&ud->q->pid, readline_stdin, ud->q);
 
 	return 1;
 }

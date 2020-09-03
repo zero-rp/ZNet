@@ -372,12 +372,12 @@ int uv__udp_recv_start(uv_udp_t* handle, uv_alloc_cb alloc_cb,
     return WSAEALREADY;
   }
 
-  err = uv_udp_maybe_bind(handle,
-                          (const struct sockaddr*) &uv_addr_ip4_any_,
-                          sizeof(uv_addr_ip4_any_),
-                          0);
-  if (err)
-    return err;
+  //err = uv_udp_maybe_bind(handle,
+  //                        (const struct sockaddr*) &uv_addr_ip4_any_,
+  //                        sizeof(uv_addr_ip4_any_),
+  //                        0);
+  //if (err)
+  //  return err;
 
   handle->flags |= UV_HANDLE_READING;
   INCREASE_ACTIVE_COUNT(loop, handle);
